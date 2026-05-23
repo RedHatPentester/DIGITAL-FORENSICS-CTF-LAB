@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HIVE CONSULT — Operation: PHANTOM WIRE CTF</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@500;600;700;800&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>:root{
+  --g900:#072407;--g800:#0f3d0f;--g700:#166320;--g600:#1c8228;
+  --g500:#22a030;--g400:#38bd46;--g200:#a8e8ae;--g100:#d4f4d8;--g50:#edfaee;
+  --white:#fff;--crystal:#f4fdf4;--bg-subtle:#f8fef8;
+  --text:#071407;--text2:#0f2d0f;--text3:#1a4d1a;--text4:#2d5c2d;
+  --border:#9dd4a0;--border2:#5cb360;
+  --easy:#22a030;--easybg:#edfaee;--easyborder:#a8e8ae;
+  --int:#166320;--intbg:#d4f4d8;--intborder:#6ed47a;
+  --hard:#0f3d0f;--hardbg:#c2e8c4;--hardborder:#38bd46;
+  --ok:#16a34a;--err:#dc2626;--warn:#d97706;
+  --fm:'Share Tech Mono','Courier New',monospace;
+  --ft:'Orbitron',monospace;--fb:'Rajdhani',system-ui,sans-serif;
+  --r:8px;--rs:4px;--sh:0 1px 4px rgba(0,80,0,.07),0 4px 16px rgba(0,80,0,.05);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--crystal);color:var(--text);font-family:var(--fb);font-size:16px;line-height:1.6;min-height:100vh;font-weight:500;-webkit-font-smoothing:antialiased}
+.hdr{background:var(--white);border-bottom:3px solid var(--g400);padding:26px 22px 20px;text-align:center;position:relative;box-shadow:var(--sh)}
+.pbadge{position:absolute;top:13px;right:16px;font-family:var(--fm);font-size:9px;color:var(--g800);border:2px solid var(--border2);padding:5px 9px;letter-spacing:2px;line-height:1.6;text-align:center;font-weight:800}
+.logo img{height:84px;border-radius:10px;margin-bottom:13px;display:block;margin-left:auto;margin-right:auto}
+.op-title{font-family:var(--ft);font-size:clamp(1.1rem,3.8vw,2.2rem);font-weight:900;color:var(--g800);letter-spacing:4px;text-transform:uppercase;margin-bottom:4px}
+.op-sub{font-family:var(--fm);font-size:10.5px;color:var(--text3);letter-spacing:2.5px;font-weight:700}
+.sec-badge{display:inline-block;margin-top:9px;font-family:var(--fm);font-size:8.5px;background:var(--g50);color:var(--g700);border:1px solid var(--easyborder);padding:3px 11px;border-radius:11px;font-weight:800;letter-spacing:1px}
+.wrap{max-width:1050px;margin:0 auto;padding:20px 15px}
+.brief{background:var(--white);border:1px solid var(--border);border-left:5px solid var(--g500);border-radius:0 var(--r) var(--r) 0;padding:15px 18px;margin-bottom:16px;box-shadow:var(--sh)}
+.brief-tag{font-family:var(--fm);font-size:9px;color:var(--g700);letter-spacing:3px;margin-bottom:6px;font-weight:800}
+.brief p{font-size:14.5px;color:var(--text2);line-height:1.85;font-weight:600}
+.brief strong{color:var(--g700);font-weight:800}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin-bottom:20px}
+.sc{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:11px 7px;text-align:center;box-shadow:var(--sh);border-top:3px solid var(--g400)}
+.sn{font-family:var(--ft);font-size:1.35rem;font-weight:900;color:var(--g800);line-height:1}
+.sl{font-family:var(--fm);font-size:8px;color:var(--text3);letter-spacing:2px;margin-top:4px;font-weight:700}
+.tier{margin-bottom:24px}
+.tier-hdr{display:flex;align-items:center;gap:11px;margin-bottom:10px;padding:12px 14px;background:var(--white);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh)}
+.tb{font-family:var(--ft);font-size:.55rem;font-weight:900;letter-spacing:3px;padding:4px 12px;border-radius:18px;white-space:nowrap;border:2px solid}
+.tb.easy{background:var(--easybg);color:var(--easy);border-color:var(--easyborder)}
+.tb.int{background:var(--intbg);color:var(--int);border-color:var(--intborder)}
+.tb.hard{background:var(--hardbg);color:var(--hard);border-color:var(--hardborder)}
+.ti{flex:1}
+.tn{font-family:var(--fb);font-size:1rem;font-weight:800;color:var(--text)}
+.td{font-family:var(--fm);font-size:9px;color:var(--text3);margin-top:2px;font-weight:700}
+.tpw{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.tc{font-family:var(--fm);font-size:9.5px;color:var(--text2);white-space:nowrap;font-weight:700}
+.tk{width:110px;height:5px;background:var(--g100);border-radius:3px;overflow:hidden}
+.tf{height:100%;border-radius:3px;transition:width .6s}
+.tf.easy{background:var(--easy)}.tf.int{background:var(--int)}.tf.hard{background:var(--hard)}
+.tlock{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:22px;text-align:center;font-family:var(--fm);font-size:11px;color:var(--text3);letter-spacing:2px;box-shadow:var(--sh);font-weight:700}
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);margin-bottom:8px;box-shadow:var(--sh);overflow:hidden;transition:border-color .2s,box-shadow .2s}
+.card:hover{border-color:var(--border2)}
+.card.ok-easy{border-color:var(--easy);box-shadow:0 0 0 1px rgba(34,160,48,.14)}
+.card.ok-int{border-color:var(--int);box-shadow:0 0 0 1px rgba(22,99,32,.14)}
+.card.ok-hard{border-color:var(--hard);box-shadow:0 0 0 1px rgba(15,61,15,.14)}
+.card.locked{opacity:.33;pointer-events:none}
+.ch{display:flex;align-items:center;gap:10px;padding:12px 15px;cursor:pointer;user-select:none;transition:background .15s;border-left:4px solid transparent}
+.card.easy-t .ch{border-left-color:var(--easy)}.card.int-t .ch{border-left-color:var(--int)}.card.hard-t .ch{border-left-color:var(--hard)}
+.ch:hover{background:var(--crystal)}
+.card.ok-easy .ch,.card.ok-int .ch,.card.ok-hard .ch{background:var(--g50)}
+.cn{font-family:var(--fm);font-size:10px;color:var(--text3);width:22px;flex-shrink:0;font-weight:800}
+.ci{width:33px;height:33px;border-radius:50%;background:var(--crystal);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.card.ok-easy .ci{background:var(--easybg);border-color:var(--easy)}
+.card.ok-int .ci{background:var(--intbg);border-color:var(--int)}
+.card.ok-hard .ci{background:var(--hardbg);border-color:var(--hard)}
+.cm{flex:1;min-width:0}
+.ct{font-family:var(--fb);font-size:15px;font-weight:800;color:var(--text)}
+.ctgs{display:flex;gap:4px;margin-top:2px;flex-wrap:wrap}
+.ctg{font-family:var(--fm);font-size:8px;padding:2px 8px;border-radius:11px;font-weight:800}
+.ctg.easy{background:var(--easybg);color:var(--easy)}.ctg.int{background:var(--intbg);color:var(--int)}.ctg.hard{background:var(--hardbg);color:var(--hard)}
+.cr{display:flex;align-items:center;gap:9px;flex-shrink:0}
+.cpts{font-family:var(--ft);font-size:12px;font-weight:900}
+.cpts.easy{color:var(--easy)}.cpts.int{color:var(--int)}.cpts.hard{color:var(--hard)}
+.chev{font-size:10px;color:var(--text4);transition:transform .22s}
+.chev.open{transform:rotate(180deg)}
+.cb{padding:0 16px 16px;border-top:1px solid var(--border)}
+.okb{display:flex;align-items:center;gap:7px;padding:8px 12px;border-radius:var(--rs);font-family:var(--fm);font-size:11px;letter-spacing:1.5px;margin:12px 0 10px;font-weight:800}
+.okb.easy{background:var(--easybg);border:1px solid var(--easy);color:var(--g700)}
+.okb.int{background:var(--intbg);border:1px solid var(--int);color:var(--g800)}
+.okb.hard{background:var(--hardbg);border:1px solid var(--hard);color:var(--g900)}
+.desc{font-size:14.5px;color:var(--text2);line-height:1.85;margin-bottom:12px;padding-top:12px;font-weight:600}
+.desc code{font-family:var(--fm);font-size:12px;background:var(--g50);color:var(--g700);padding:1px 5px;border-radius:3px;border:1px solid var(--border);font-weight:700}
+.desc em{color:var(--g700);font-style:normal;font-weight:800}
+.slbl{display:flex;align-items:center;gap:9px;font-family:var(--fm);font-size:8.5px;color:var(--text2);letter-spacing:3px;margin-bottom:6px;font-weight:800}
+.slbl::after{content:'';flex:1;height:1px;background:var(--border)}
+.evw{margin-bottom:12px;border-radius:var(--r);overflow:hidden;border:1px solid var(--border)}
+.evt{background:var(--g800);padding:7px 13px;display:flex;align-items:center;gap:6px}
+.evd{width:9px;height:9px;border-radius:50%}
+.evf{font-family:var(--fm);font-size:9.5px;color:rgba(255,255,255,.5);margin-left:7px}
+.ev{background:var(--bg-subtle);padding:11px 13px;font-family:var(--fm);font-size:11.5px;line-height:1.9;color:var(--g900);white-space:pre-wrap;overflow-x:auto;max-height:300px;overflow-y:auto;font-weight:600}
+.tp{background:var(--white);border:1px solid var(--border);border-top:3px solid var(--g500);border-radius:var(--r);padding:12px 13px;margin-bottom:8px}
+.tl{font-family:var(--fm);font-size:9px;color:var(--g700);letter-spacing:3px;margin-bottom:6px;font-weight:900}
+.sll{font-family:var(--fm);font-size:8.5px;color:var(--text3);letter-spacing:1.5px;margin:4px 0 3px;font-weight:700}
+.ta{width:100%;background:var(--crystal);border:1px solid var(--border);border-radius:var(--rs);color:var(--text);font-family:var(--fm);font-size:11.5px;padding:7px 10px;outline:none;resize:vertical;transition:border-color .2s;font-weight:600}
+.ta:focus{border-color:var(--g500);background:var(--white)}
+.ta::placeholder{color:var(--text4)}
+.tf2{background:var(--crystal);border:1px solid var(--border);border-radius:var(--rs);color:var(--text);font-family:var(--fm);font-size:11.5px;padding:6px 9px;outline:none;transition:border-color .2s;width:100%;font-weight:600}
+.tf2:focus{border-color:var(--g500);background:var(--white)}
+.to{background:var(--g50);border:1px solid var(--easyborder);border-radius:var(--rs);padding:7px 11px;font-family:var(--fm);font-size:12px;color:var(--g800);min-height:30px;word-break:break-all;margin-top:5px;font-weight:800}
+.to.pre{white-space:pre;overflow-x:auto}
+.rr{display:flex;flex-wrap:wrap;gap:3px;margin:5px 0}
+.rb{font-family:var(--fm);font-size:9px;padding:3px 9px;border:1.5px solid var(--border2);background:var(--white);color:var(--g700);cursor:pointer;border-radius:11px;transition:all .15s;font-weight:800}
+.rb:hover{border-color:var(--g500);color:var(--g500)}
+.rb.active{background:var(--g600);border-color:var(--g600);color:#fff}
+.xr{display:flex;gap:9px}
+.xr>div:first-child{flex:2}.xr>div:last-child{flex:1}
+.hb{display:inline-flex;align-items:center;gap:5px;background:none;border:1.5px solid var(--border2);color:var(--text2);font-family:var(--fm);font-size:9.5px;padding:5px 12px;cursor:pointer;letter-spacing:1px;border-radius:18px;transition:all .2s;margin-bottom:9px;font-weight:700}
+.hb:hover{border-color:var(--warn);color:var(--warn)}
+.hbox{background:#fefce8;border:1px solid #fde68a;border-left:4px solid var(--warn);padding:9px 12px;font-size:13.5px;color:#5c3209;margin-bottom:10px;border-radius:0 var(--rs) var(--rs) 0;line-height:1.75;display:none;font-weight:600}
+.fr{display:flex;gap:7px}
+.fi{flex:1;background:var(--white);border:2px solid var(--border2);border-radius:var(--rs);color:var(--g800);font-family:var(--fm);font-size:14px;padding:9px 12px;outline:none;letter-spacing:.5px;transition:border-color .2s;font-weight:700}
+.fi:focus{border-color:var(--g500)}
+.fi::placeholder{color:var(--text4);font-weight:500}
+.fi:disabled{opacity:.6;cursor:not-allowed}
+.sb{background:var(--g600);border:none;color:#fff;font-family:var(--fm);font-size:10.5px;padding:9px 17px;cursor:pointer;letter-spacing:2px;border-radius:var(--rs);white-space:nowrap;transition:background .2s;font-weight:700;min-width:105px}
+.sb:hover{background:var(--g700)}
+.sb:disabled{background:var(--text4);cursor:not-allowed}
+.ff{margin-top:5px;font-family:var(--fm);font-size:11.5px;min-height:15px;letter-spacing:.5px;font-weight:800}
+.fok{color:var(--ok)}.fer{color:var(--err)}
+#victory{display:none;background:var(--white);border:2px solid var(--g400);border-radius:var(--r);padding:40px 22px;text-align:center;margin-top:12px;box-shadow:0 8px 30px rgba(0,100,0,.11)}
+.vt{font-family:var(--ft);font-size:clamp(1.2rem,4vw,2.2rem);color:var(--g700);font-weight:900;letter-spacing:4px;margin-bottom:10px}
+.vs{font-family:var(--ft);font-size:2.1rem;color:var(--g600);font-weight:900;margin:10px 0 5px}
+.vc{font-family:var(--fm);font-size:10.5px;color:var(--text3);letter-spacing:4px;font-weight:700}
+footer{margin-top:24px;padding:15px;border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;font-family:var(--fm);font-size:9px;color:var(--text2);letter-spacing:1.5px;font-weight:700}
+@media(max-width:680px){.stats{grid-template-columns:repeat(3,1fr)}.fr{flex-direction:column}.xr{flex-direction:column}.tk{width:70px}}</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="pbadge">&#9888; PROPERTY OF<br>HIVE CONSULT<br>CONFIDENTIAL</div>
+  <div class="logo"><img src="data:image/jpeg;base64,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" alt="HIVE Consult"></div>
+  <div class="op-title">Operation: Phantom Wire</div>
+  <div class="op-sub">// APT INCIDENT RESPONSE CTF &nbsp;&middot;&nbsp; 17 CHALLENGES &nbsp;&middot;&nbsp; MERIDIAN BANK BREACH //</div>
+  <div class="sec-badge">&#128274; Server-Validated &nbsp;&middot;&nbsp; Flags never exposed to client</div>
+</header>
+
+<div class="wrap">
+<div class="brief">
+  <div class="brief-tag">&#9672; CASE BRIEFING &mdash; REF: HIVE-OPS-2024-PW-001 &nbsp;|&nbsp; CLASSIFICATION: RESTRICTED</div>
+  <p>The <strong>PHANTOM APT Group</strong> (nation-state sponsored) has successfully compromised <strong>Meridian Bank&rsquo;s</strong> internal network. The multi-stage attack began with a spear-phishing campaign targeting finance staff, progressed through credential theft and lateral movement, deployed a custom implant (<em>phantom_implant_v3</em>), and exfiltrated SWIFT transaction records via DNS tunnelling. HIVE Consult has been engaged for full incident response. You must reconstruct the complete attack chain by analysing 17 evidence artefacts. All flags follow the format <strong>HIVE&#123;...&#125;</strong>.</p>
+</div>
+
+<div class="stats" id="sbar">
+  <div class="sc"><div class="sn" id="st-sc">0</div><div class="sl">TOTAL SCORE</div></div>
+  <div class="sc"><div class="sn" id="st-fl">0/17</div><div class="sl">FLAGS FOUND</div></div>
+  <div class="sc"><div class="sn" id="st-ea">0/4</div><div class="sl">EASY</div></div>
+  <div class="sc"><div class="sn" id="st-in">0/8</div><div class="sl">INTERMEDIATE</div></div>
+  <div class="sc"><div class="sn" id="st-ha">0/5</div><div class="sl">HARD</div></div>
+</div>
+
+<div id="root"></div>
+
+<div id="victory">
+  <div class="vt">&#9672; Case Closed &#9672;</div>
+  <p style="color:var(--text3);font-size:14px;max-width:540px;margin:.5rem auto 1rem;line-height:1.8;font-weight:600">All 17 artefacts analysed. The PHANTOM APT Group&rsquo;s complete attack chain has been documented and the evidence package submitted to law enforcement. Operation PHANTOM WIRE: CLOSED.</p>
+  <div class="vs" id="vsc">0 / 3500 PTS</div>
+  <div class="vc">CLEARANCE: MASTER APT INCIDENT RESPONDER</div>
+</div>
+
+<footer>
+  <span>&#9672; HIVE CONSULT &mdash; OPERATION PHANTOM WIRE CTF &mdash; APT INCIDENT RESPONSE</span>
+  <span>BUILT BY NANA SEI ANYEMEDU</span>
+</footer>
+</div>
+
+<script>
+// ================================================================
+//  HIVE CONSULT CTF Engine — Operation PHANTOM WIRE
+//  FLAGS: NOT IN THIS FILE. POST /api/check validates server-side.
+//  Inspecting this source reveals encoded evidence only.
+// ================================================================
+
+const PTS={1:100,2:100,3:100,4:100,5:200,6:200,7:200,8:200,9:200,10:200,11:200,12:200,13:300,14:300,15:300,16:300,17:300};
+const state={solved:new Set(),score:0,open:new Set([1])};
+const rotSh={};
+
+// — Decoders —
+function dHex(v){try{const c=(v||'').trim().replace(/,/g,' ');const b=c.includes(' ')?c.split(/\s+/).filter(Boolean):(c.match(/.{2}/g)||[]);return b.map(x=>String.fromCharCode(parseInt(x,16))).join('');}catch{return '[Invalid hex]';}}
+function dB64(v){try{let i=(v||'').trim().replace(/-/g,'+').replace(/_/g,'/');const p=i.length%4;if(p)i+='='.repeat(4-p);return atob(i);}catch{return '[Invalid base64]';}}
+function dURL(v){try{return decodeURIComponent((v||'').trim());}catch{return '[Invalid URL encoding]';}}
+function dBin(v){try{return(v||'').trim().split(/\s+/).filter(Boolean).map(g=>String.fromCharCode(parseInt(g,2))).join('');}catch{return '[Invalid binary]';}}
+function dCaes(v,sh){return(v||'').replace(/[a-zA-Z]/g,c=>{const b=c<='Z'?65:97;return String.fromCharCode(((c.charCodeAt(0)-b+sh)%26)+b);});}
+function dXOR(hv,key){try{if(!key)return'—';const b=(hv||'').trim().replace(/,/g,' ').split(/\s+/).filter(Boolean).map(x=>parseInt(x,16));return b.map((x,i)=>String.fromCharCode(x^key.charCodeAt(i%key.length))).join('');}catch{return '[Invalid]';}}
+function dRev(v){return(v||'').split('').reverse().join('');}
+function dB32(v){
+  try{
+    const ch='ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+    const inp=(v||'').trim().toUpperCase().replace(/[=\s]/g,'');
+    let bits=0,val=0,out='';
+    for(let i=0;i<inp.length;i++){const idx=ch.indexOf(inp[i]);if(idx===-1)continue;val=(val<<5)|idx;bits+=5;if(bits>=8){out+=String.fromCharCode((val>>>(bits-8))&0xFF);bits-=8;}}
+    return out;
+  }catch{return '[Invalid base32]';}
+}
+function dJWT(v){
+  try{
+    const pts=v.trim().split('.');
+    if(pts.length!==3)return 'Error: JWT needs 3 dot-separated parts';
+    function bu(s){let p=s.replace(/-/g,'+').replace(/_/g,'/');const q=p.length%4;if(q)p+='='.repeat(4-q);return atob(p);}
+    const hdr=JSON.parse(bu(pts[0]));
+    const pld=JSON.parse(bu(pts[1]));
+    return 'HEADER:\n'+JSON.stringify(hdr,null,2)+'\n\nPAYLOAD:\n'+JSON.stringify(pld,null,2)+'\n\n[Signature not verified — CTF context]';
+  }catch(e){return '[Invalid JWT: '+e.message+']';}
+}
+
+// — Tool HTML —
+function toolHtml(type,id){
+  const u=type+id;
+  switch(type){
+    case 'hex':return `<div class="tp"><div class="tl">&#9672; HEX &rarr; ASCII DECODER</div><div class="sll">Input &mdash; hex bytes (space, comma, or continuous)</div><textarea class="ta" id="hi${u}" rows="2" placeholder="48 49 56 45 7B ..." oninput="upH('${u}')"></textarea><div class="sll">Output</div><div class="to" id="ho${u}">&#8212;</div></div>`;
+    case 'b64':return `<div class="tp"><div class="tl">&#9672; BASE64 / BASE64URL DECODER</div><div class="sll">Input &mdash; base64 or base64url string</div><textarea class="ta" id="bi${u}" rows="2" placeholder="e.g. SFZFR3Q..." oninput="upB('${u}')"></textarea><div class="sll">Output</div><div class="to" id="bo${u}">&#8212;</div></div>`;
+    case 'url':return `<div class="tp"><div class="tl">&#9672; URL DECODER</div><div class="sll">Input &mdash; URL-encoded string</div><textarea class="ta" id="ui${u}" rows="2" placeholder="HIVE%7B..." oninput="upU('${u}')"></textarea><div class="sll">Output</div><div class="to" id="uo${u}">&#8212;</div></div>`;
+    case 'bin':return `<div class="tp"><div class="tl">&#9672; BINARY &rarr; ASCII DECODER</div><div class="sll">Input &mdash; space-separated 8-bit groups</div><textarea class="ta" id="bni${u}" rows="3" placeholder="01001000 01001001 ..." oninput="upBn('${u}')"></textarea><div class="sll">Output</div><div class="to" id="bno${u}">&#8212;</div></div>`;
+    case 'caesar':return `<div class="tp"><div class="tl">&#9672; CAESAR / ROT DECODER</div><div class="sll">Input</div><textarea class="ta" id="ci${u}" rows="2" placeholder="Ciphertext..." oninput="upC('${u}')"></textarea><div class="rr">${[1,3,5,7,13,17,19,21,25].map(n=>`<button class="rb${n===13?' active':''}" onclick="sRot('${u}',${n},this)">ROT-${n}</button>`).join('')}</div><div class="sll">Output &mdash; <span id="rl-${u}">ROT-13</span></div><div class="to" id="co${u}">&#8212;</div></div>`;
+    case 'xor':return `<div class="tp"><div class="tl">&#9672; XOR DECRYPTOR</div><div class="xr"><div><div class="sll">Ciphertext (hex, space-separated)</div><textarea class="ta" id="xi${u}" rows="2" placeholder="A1 B2 C3 ..." oninput="upX('${u}')"></textarea></div><div><div class="sll">Key (text)</div><input class="tf2" id="xk${u}" placeholder="key..." oninput="upX('${u}')" style="height:68px"></div></div><div class="sll">Decrypted Output</div><div class="to" id="xo${u}">&#8212;</div></div>`;
+    case 'reverse':return `<div class="tp"><div class="tl">&#9672; STRING REVERSAL</div><div class="sll">Input</div><textarea class="ta" id="ri${u}" rows="2" placeholder="String to reverse..." oninput="upR('${u}')"></textarea><div class="sll">Reversed Output</div><div class="to" id="ro${u}">&#8212;</div></div>`;
+    case 'b32':return `<div class="tp"><div class="tl">&#9672; BASE32 DECODER (RFC 4648)</div><div class="sll">Input &mdash; base32 string (A&ndash;Z and 2&ndash;7, with or without padding)</div><textarea class="ta" id="b3i${u}" rows="2" placeholder="JBSWY3DPEBRHK..." oninput="upB3('${u}')"></textarea><div class="sll">Output</div><div class="to" id="b3o${u}">&#8212;</div></div>`;
+    case 'jwt':return `<div class="tp"><div class="tl">&#9672; JWT ANALYZER</div><div class="sll">Input &mdash; full JWT token (header.payload.signature)</div><textarea class="ta" id="jwi${u}" rows="2" placeholder="eyJhbGci..." oninput="upJW('${u}')"></textarea><div class="sll">Decoded Header + Payload</div><div class="to pre" id="jwo${u}">&#8212;</div></div>`;
+  }
+}
+function g(id){return(document.getElementById(id)||{}).value||'';}
+function s(id,v){const el=document.getElementById(id);if(el)el.textContent=v;}
+function upH(u){s('ho'+u,g('hi'+u).trim()?dHex(g('hi'+u)):'&#8212;');}
+function upB(u){s('bo'+u,g('bi'+u).trim()?dB64(g('bi'+u)):'&#8212;');}
+function upU(u){s('uo'+u,g('ui'+u).trim()?dURL(g('ui'+u)):'&#8212;');}
+function upBn(u){s('bno'+u,g('bni'+u).trim()?dBin(g('bni'+u)):'&#8212;');}
+function upC(u){s('co'+u,g('ci'+u)?dCaes(g('ci'+u),rotSh[u]||13):'&#8212;');}
+function upX(u){s('xo'+u,(g('xi'+u)&&g('xk'+u))?dXOR(g('xi'+u),g('xk'+u)):'&#8212;');}
+function upR(u){s('ro'+u,g('ri'+u)?dRev(g('ri'+u)):'&#8212;');}
+function upB3(u){s('b3o'+u,g('b3i'+u).trim()?dB32(g('b3i'+u)):'&#8212;');}
+function upJW(u){s('jwo'+u,g('jwi'+u).trim()?dJWT(g('jwi'+u)):'&#8212;');}
+function sRot(u,n,btn){rotSh[u]=n;s('rl-'+u,'ROT-'+n);document.querySelectorAll(`[onclick*="'${u}'"]`).forEach(b=>b.classList.remove('active'));btn.classList.add('active');upC(u);}
+function escH(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+// — Challenge Data (17 challenges — evidence pre-computed, no flags) —
+const CHS=[
+  {id:1,tier:'easy',pts:100,icon:'&#128231;',title:'The Phishing Lure',tags:['EMAIL FORENSICS','HEX DECODE'],
+    desc:'A spear-phishing email was delivered to Finance Manager <em>j.alderton@meridianbank.com</em> on Monday morning. The email passed through the corporate mail gateway and was opened. Forensic analysis of the raw <code>.eml</code> file reveals suspicious custom headers. One header field contains a hex-encoded tracking beacon. Decode it to identify the beacon ID used by the PHANTOM operators.',
+    ev:`$ mu analyze phishing_sample.eml --headers
+
+SHA256        : 4f3a2b1c9d8e7f6a5b4c3d2e1f0a9b8c7d6e5f4a3b2c1d0e9f8a7b6c5d4e3f2
+Received      : from smtp-relay.anon-host.net (185.234.219.47)
+                by mail.meridianbank.com; Mon, 04 Mar 2024 09:14:22 +0000
+
+──────── Headers ──────────────────────────────────────────
+From          : Meridian Alerts <support@meridian-alerts.com>
+To            : j.alderton@meridianbank.com
+Date          : Mon, 04 Mar 2024 09:14:22 +0000
+Subject       : URGENT: Verify your account — action required
+Message-ID    : <4f2a9c1b.7e3d@meridian-alerts.com>
+X-Mailer      : Microsoft Outlook 16.0.19326
+X-Priority    : 1 (Highest)
+X-SPF-Result  : FAIL (185.234.219.47 not authorized)
+X-DKIM        : FAIL (signature invalid)
+X-Spam-Score  : 9.4 (HIGH)
+X-Beacon-ID   : 48 49 56 45 7B 70 68 31 73 68 31 6E 67 5F 68 33 34 64 33 72 5F 33 78 70 30 73 33 64 7D
+X-Route-Path  : 185.234.219.47 → 10.0.44.211 → 10.0.2.44
+Content-Type  : text/html; charset=UTF-8
+
+──────── Verdict ──────────────────────────────────────────
+Classification: SPEAR-PHISHING / APT LURE
+Attachment    : Invoice_Q1_2024.docx (with macro)
+Analyst Note  : X-Beacon-ID contains encoded tracking token`,tools:['hex'],
+    hint:'The suspicious header is X-Beacon-ID. Its value is a series of space-separated hex byte pairs. Each pair is one ASCII character. Paste the entire value into the Hex Decoder.'},
+
+  {id:2,tier:'easy',pts:100,icon:'&#9889;',title:'The Macro Dropper',tags:['SYSMON','POWERSHELL','BASE64'],
+    desc:'The phishing attachment was a Word document with a malicious macro. Windows Sysmon Event ID 4104 (Script Block Logging) captured the PowerShell command spawned by the macro. The command uses <em>-EncodedCommand</em>, a built-in PowerShell feature that accepts a <em>Base64-encoded</em> command string. Decode the argument to reveal the dropper command.',
+    ev:`$ Get-WinEvent -LogName "Microsoft-Windows-PowerShell/Operational" |
+  Where-Object { $_.Id -eq 4104 } | Format-List
+
+EventId       : 4104
+TimeCreated   : 2024-03-04 09:31:17.441
+Computer      : MERIDIAN-WS07
+User          : MERIDIANBANK\\j.alderton
+ParentProcess : WINWORD.EXE (PID 4832)
+ProcessName   : powershell.exe (PID 6124)
+
+──────── Script Block Log ────────────────────────────────
+CommandLine:
+  powershell.exe -NoProfile -NonInteractive -WindowStyle Hidden
+                 -EncodedCommand SElWRXtkcjBwcDNyX2MwbW00bmRfM3hwMHMzZH0=
+
+────────────────────────────────────────────────────────
+Network      : 10.0.2.44 → 185.234.219.47:443 (established after exec)
+Analyst Note : -EncodedCommand takes a base64-encoded command string`,tools:['b64'],
+    hint:'The -EncodedCommand argument is a Base64 string. Paste it into the Base64 Decoder. The decoded result is the actual PowerShell command containing the flag.'},
+
+  {id:3,tier:'easy',pts:100,icon:'&#127760;',title:'The Web Shell',tags:['APACHE LOG','URL ENCODING'],
+    desc:'After initial access, PHANTOM planted a PHP web shell on the DMZ web server <code>MERIDIAN-WEB01</code>. Apache access logs reveal the attacker testing the web shell via GET requests. The <code>cmd</code> parameter is <em>URL-encoded</em>. Identify the suspicious request at 09:47:58 and decode the command parameter.',
+    ev:`$ grep -r "thumb.php" /var/log/apache2/access.log | head -20
+
+──────── Apache Access Log ───────────────────────────────
+Host          : MERIDIAN-WEB01 (10.0.1.15)
+Log Period    : 2024-03-04 09:30 – 10:00
+
+[09:32:14] 10.0.2.44 "GET /assets/images/logo.png HTTP/1.1" 200 8241
+[09:33:01] 10.0.2.44 "GET /css/main.css HTTP/1.1" 200 14820
+[09:47:31] 185.234.219.47 "GET /images/thumb.php?w=120&h=80 HTTP/1.1" 200 312
+[09:47:44] 185.234.219.47 "POST /images/thumb.php HTTP/1.1" 200 88
+[09:47:58] 185.234.219.47 "GET /images/thumb.php?cmd=HIVE%7Bw3b_sh3ll_4cc3ss_l0g%7D HTTP/1.1" 200 156
+[09:48:02] 185.234.219.47 "GET /images/thumb.php?cmd=id HTTP/1.1" 200 34
+[09:48:17] 185.234.219.47 "GET /images/thumb.php?cmd=whoami HTTP/1.1" 200 22
+[09:51:44] 185.234.219.47 "GET /images/thumb.php?cmd=ls%20-la HTTP/1.1" 200 488
+[09:55:11] 185.234.219.47 "GET /images/thumb.php?cmd=cat%20%2Fetc%2Fpasswd HTTP/1.1" 200 1847
+
+──────────────────────────────────────────────────
+Analyst Note  : thumb.php is a PHP web shell. The "cmd" parameter is
+                URL-encoded. Focus on the 09:47:58 request.`,tools:['url'],
+    hint:'Look at the GET request at 09:47:58. The "cmd" parameter value is URL-encoded. %7B is { and %7D is }. Paste the full value of the cmd parameter into the URL Decoder.'},
+
+  {id:4,tier:'easy',pts:100,icon:'&#128251;',title:'The Beacon Signal',tags:['NETWORK CAPTURE','BINARY'],
+    desc:'Periodic beacon traffic was captured on port 4444 between the compromised workstation and the PHANTOM C2 server. The raw payload of frame 0x0041 consists entirely of binary digits. Each group of <em>8 binary digits</em> represents one ASCII character. Decode the binary stream to identify the beacon identification string.',
+    ev:`$ tcpdump -r beacon_traffic.pcap -X -nn "src 10.0.2.44 and dst port 4444"
+
+Frame  : 0x0041 (65)
+Time   : 2024-03-04 10:03:17.221091
+Src    : 10.0.2.44:52881 → Dst: 185.234.219.47:4444
+Length : 26 bytes | Protocol: CUSTOM
+
+──────── Raw Payload (binary stream) ─────────────────────────
+
+01001000 01001001 01010110 01000101 01111011 01100010 00110011 00110100 01100011 00110000 01101110 01011111 01100010 00110001 01101110 00110100 01110010 01111001 01011111 01110011 00110001 01100111 01101110 00110100 01101100 01111101
+
+──────────────────────────────────────────────────
+Analyst Note  : Each group of 8 bits = 1 ASCII character.
+                Payload appears to be a structured identification string.`,tools:['bin'],
+    hint:'Split the binary stream into groups of 8 bits. Each 8-bit group is one ASCII character. Paste the full stream into the Binary Decoder.'},
+
+  {id:5,tier:'int',pts:200,icon:'&#128190;',title:'The Malware Config',tags:['PE ANALYSIS','HEX DUMP'],
+    desc:'The malware dropper <code>malware_dropper.exe</code> was recovered and analysed with <code>pecheck.py</code>. The tool identified an embedded configuration block at offset 0x3A00. The block is a raw hex dump with no ASCII column. Printable ASCII characters occupy hex values <code>0x20–0x7E</code>. Locate the consecutive printable byte sequence and decode it to extract the embedded config token.',
+    ev:`$ pecheck.py -p malware_dropper.exe | grep -A 40 "Embedded Config"
+
+File          : malware_dropper.exe
+SHA256        : 9a3f7b2e1c8d5f4a6b3c2e1d0f9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1
+Compiler      : MSVC 19.34 (2022)
+Packer        : None detected
+Sections      : .text .rdata .data .rsrc .reloc
+Entropy       : 7.21 (HIGH — possible embedded payload)
+
+──────── Embedded Config Block (offset 0x3A00) ────────────────────
+
+Offset    Bytes (hex)
+────────────────────────────────────────────────────────────
+00000000  D9 FA 99 7C 61 6C ED C9  97 65 0E 24 D4 89 EE 7B
+00000010  05 12 E1 B9 C6 3F 66 1D  3E C9 DF 87 55 58 50 A1
+00000020  8E E8 17 1C 4F D6 F8 90  63 64 21 82 84 EF DC 3B
+00000030  3D 21 A4 A2 9F 0F 3A 3F  D1 DB AF 72 69 1A C6 A0
+00000040  48 49 56 45 7B 70 33 5F  68 33 34 64 33 72 5F 63
+00000050  30 6E 66 31 67 5F 6C 33  34 6B 33 64 7D A4 3F 66
+00000060  5D 15 F2 C4 9D 25 45 19  89 99 E2 70 10 11 A4 D1
+00000070  F1 20 36 69 FB D7 F9 EE  2C 18 3E CD EE 89 18 77
+
+──────────────────────────────────────────────────
+Analyst Note  : ASCII printable range is 0x20–0x7E. Scan the hex dump
+                for a consecutive run of values within that range.`,tools:['hex'],
+    hint:'Scan each row for hex values between 0x20 and 0x7E. Look for a long consecutive run (starting around row 0x00000040). Copy those bytes and paste into the Hex Decoder (space-separated).'},
+
+  {id:6,tier:'int',pts:200,icon:'&#128272;',title:'The Stolen Credential',tags:['PCAP','LATERAL MOVEMENT','BASE64'],
+    desc:'Following initial compromise of MERIDIAN-WS07, the attacker performed lateral movement toward the domain controller <code>MERIDIAN-DC01</code>. Wireshark captured an SMB relay attack tunnelled through an HTTP proxy using <em>HTTP Basic Authentication</em>. Basic Auth encodes credentials as <code>base64(username:password)</code>. Decode the Proxy-Authorization header to recover the stolen credentials.',
+    ev:`$ wireshark -r lateral_movement.pcap -Y "http.authorization || smb2.cmd==1" -V
+
+──────── Packet 2847 ──────────────────────────────────────
+Timestamp     : 2024-03-04 10:41:19.003
+Src IP        : 10.0.2.44:49812  →  Dst IP: 10.0.1.5:8080
+Protocol      : HTTP (SMB relay via HTTP proxy)
+
+HTTP Request:
+  CONNECT 10.0.1.5:445 HTTP/1.1
+  Host: 10.0.1.5:8080
+  Proxy-Authorization: Basic cGhhbnRvbS5hZG06SElWRXtsNHQzcjRsX20wdjNtM250X2NyM2RzfQ==
+  User-Agent: Microsoft-WebDAV-MiniRedir/10.0.19041
+
+[HTTP/1.1 200 Connection Established]
+[SMB2 Session Setup → MERIDIAN-DC01 — SUCCESS]
+
+──────────────────────────────────────────────────
+Analyst Note  : Basic Auth encodes credentials as base64("user:password").
+                Decode the Proxy-Authorization value to recover credentials.`,tools:['b64'],
+    hint:'HTTP Basic Auth encodes credentials as base64("username:password"). Decode the Proxy-Authorization value — the password field contains the flag.'},
+
+  {id:7,tier:'int',pts:200,icon:'&#128465;',title:'The Staging File',tags:['FILE CARVING','DISK FORENSICS'],
+    desc:'Before exfiltration, PHANTOM staged all collected data into a single archive. The staging file was deleted after transfer, but <code>foremost</code> recovered three fragments from unallocated sectors across the disk image. The file name itself was the staging token. Reassemble the fragments in sector order to reconstruct it.',
+    ev:`$ foremost -t all -q -i phantom_staging.dd -o ./carved/
+Processing: phantom_staging.dd (8.0 GB image) ... done
+Result: 3 recoverable fragments across unallocated sectors
+
+━━━ FRAGMENT 1 — Sector 122880 (LBA: 0x1E000) ALLOCATED ━━━
+0E 24 D4 89 EE 7B  48 49 56 45 7B 73 74 34 67 31
+C6 3F 66 1D 3E C9 DF 87 55 58 50 A1 8E E8 17 1C
+  → Printable ASCII recovered: HIVE{st4g1
+
+━━━ FRAGMENT 2 — Sector 245760 (LBA: 0x3C000) UNALLOCATED ━━━
+50 A1 8E E8 17 1C 4F D6 F8 90 63 64 21 82 84 EF
+6E 67 5F 66 31 6C 33 5F 72 33  A4 A2 9F 0F 3A 3F
+  → Printable ASCII recovered: ng_f1l3_r3
+
+━━━ FRAGMENT 3 — Sector 368640 (LBA: 0x5A000) UNALLOCATED ━━━
+63 30 76 33 72 33 64 7D  69 1A C6 A0 A4 3F 66 5D
+11 A4 D1 F1 20 36 69 FB D7 F9 EE 2C 18 3E CD EE
+  → Printable ASCII recovered: c0v3r3d}
+
+──────────────────────────────────────────────────
+Analyst Note  : Concatenate all three "Printable ASCII" strings in order
+                (Fragment 1 → 2 → 3) to recover the complete staged filename.`,tools:[],
+    hint:'No decoder needed. Read the "Printable ASCII recovered" line from each fragment in order (1 &rarr; 2 &rarr; 3). Concatenate all three strings directly — that is the complete flag.'},
+
+  {id:8,tier:'int',pts:200,icon:'&#128225;',title:'The C2 Channel',tags:['NETWORK','XOR DECRYPTION'],
+    desc:'A second encrypted channel was identified on port 8443. After recovering the TLS session key from process memory, the inner custom protocol was decrypted. The payload is encrypted with a repeating <em>XOR stream cipher</em>. Analyse the evidence for the threat actor group’s designation — it is the XOR key.',
+    ev:`$ tshark -r c2_channel.pcap -Y "tcp.port==8443" -T fields -e data.text
+
+──────── C2 Traffic Analysis ────────────────────────────────
+Timestamp  : 2024-03-04 11:31:04.881
+Src        : 10.0.2.44:54219 → 185.234.219.47:8443
+Protocol   : TLS-Wrapped Custom Protocol (PHANTOM Beacon v2.1)
+
+After TLS stripping (recovered session key from memory):
+
+Group-ID   : PHANTOM-APT
+Campaign   : WIRE-2024-MERIDIAN
+Operator   : CTRL_NODE_ALPHA
+
+Encrypted Payload (hex):
+18 01 17 0B 2F 2C 7F 0F 30 71 3C 0B 2D 7E 64 2B 71 20 0B 2B 7E 33 78 25 7D 30 32
+
+Encryption : XOR stream cipher
+Analyst Note: The threat actor group designation appears above.
+              Try the group name as the XOR decryption key.`,tools:['xor'],
+    hint:'The encrypted payload is shown as space-separated hex. The group designation "PHANTOM-APT" appears clearly in the evidence — try the group name (before the dash) as the XOR key.'},
+
+  {id:9,tier:'int',pts:200,icon:'&#128178;',title:'The Chrome Vault',tags:['CREDENTIAL ACCESS','MULTI-STAGE BASE64'],
+    desc:'The PHANTOM implant dumped Chrome’s saved credentials using a DPAPI extraction tool. The SWIFT portal password was stored in an encoded form. Decoding it once produces output that <em>still looks encoded</em>. The same encoding was applied multiple times to obscure it. Decode iteratively until the plaintext flag is recovered.',
+    ev:`$ python3 chrome_decrypt.py --profile "C:\\Users\\j.alderton\\AppData\\Local\\Google\\Chrome\\User Data\\Default"
+
+──────── Chrome Login Data Dump ─────────────────────────────
+User        : j.alderton
+Host        : MERIDIAN-WS07
+Extracted   : 2024-03-04 11:15:44
+
+URL         : https://meridian-internal.corp/swift-portal
+Username    : john.alderton
+Password    : [ENCRYPTED — key derived from DPAPI master key]
+Stored Repr : U0VsV1JYdGphSEl3YlROZlkzSXpaRjl6ZERCeU0xOXNNelJyZlE9PQ==
+
+URL         : https://meridian-internal.corp/admin
+Username    : j.alderton.admin
+Password    : [ENCRYPTED]
+Stored Repr : e1BhJHN3MHJkMXN9 (already cracked)
+
+──────────────────────────────────────────────────
+Analyst Note: The swift-portal password representation has been encoded
+              more than once. Try decoding it — then decode the result.`,tools:['b64'],
+    hint:'Decode the Stored Repr value once. If the output still looks like a base64 string, copy it back into the input and decode again. Repeat until plaintext appears.'},
+
+  {id:10,tier:'int',pts:200,icon:'&#127758;',title:'The DNS Tunnel',tags:['DNS FORENSICS','BASE32'],
+    desc:'PHANTOM exfiltrated customer records using <em>DNS tunnelling</em> — data is encoded and embedded in subdomain labels of DNS queries sent to an attacker-controlled domain. DNS requires only alphanumeric characters, making <em>Base32</em> (RFC 4648: A–Z and 2–7) ideal for this technique. Decode the subdomain from the 10:48:01 query to recover the exfiltrated token.',
+    ev:`$ cat /var/log/bind/queries.log | grep -v "meridianbank.com" | grep -v "local" | tail -30
+
+──────── Anomalous DNS Query Log ────────────────────────────
+Resolver   : MERIDIAN-DC01 (10.0.1.5)
+Period     : 2024-03-04 10:47 – 11:02
+
+[10:47:23] client 10.0.2.44#52341: query: JFBGC3DEFVZC6.exfil.wire-drop.net IN A
+[10:47:44] client 10.0.2.44#52342: query: IFBGCYLSMFRA.exfil.wire-drop.net IN A
+[10:48:01] client 10.0.2.44#52343: query: JBEVMRL3MRXHGXZTPBTDC3C7MNUDI3TOGNWF6ZRQOVXGI7I=.exfil.wire-drop.net IN A
+[10:48:19] client 10.0.2.44#52344: query: KFBGCY3SNFXG6.exfil.wire-drop.net IN A
+[10:48:37] client 10.0.2.44#52345: query: MFBGCY3UNFXHO.exfil.wire-drop.net IN A
+[10:49:02] client 10.0.2.44#52346: query: NFBGCY3VNFXIS.exfil.wire-drop.net IN A
+
+──────────────────────────────────────────────────
+Analyst Note: DNS exfiltration encodes data in subdomains. The 10:48:01
+              query uses Base32 (RFC 4648) encoding — uppercase A–Z and 2–7.
+              Decode that subdomain only (before the first dot).`,tools:['b32'],
+    hint:'Identify the 10:48:01 DNS query. Extract only the subdomain portion (before the first dot). That value is Base32 encoded — paste it into the Base32 Decoder.'},
+
+  {id:11,tier:'int',pts:200,icon:'&#128196;',title:'The Implant Token',tags:['HTTP ANALYSIS','JWT'],
+    desc:'The PHANTOM implant uses a custom REST API for command and control. Captured traffic shows it authenticates using a <em>JWT (JSON Web Token)</em> in the Authorization header. A JWT has three Base64url-encoded parts separated by dots: <code>header.payload.signature</code>. The payload contains the agent’s identity and an embedded flag. Analyse the token.',
+    ev:`$ tshark -r implant_comms.pcap -Y "http.authorization contains Bearer" -T fields -e http.authorization
+
+──────── Custom Implant API Traffic ────────────────────────────
+Timestamp  : 2024-03-04 11:52:09.441
+Src        : 10.0.2.44  →  185.234.219.47:443
+Endpoint   : POST /api/v2/agent/checkin
+
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJnaG9zdC51c2VyIiwiZW1haWwiOiJnaG9zdEBtZXJpZGlhbmJhbmsuY29tIiwicm9sZSI6InN1cGVyYWRtaW4iLCJkZXB0IjoiSVRfSU5GUkFTVFJVQ1RVUkUiLCJmbGFnIjoiSElWRXtqd3RfdDBrM25fcDR5bDA0ZF9sMzRrfSIsImlhdCI6MTcwOTU0NzkzNywiZXhwIjoxNzA5NjM3OTM3fQ.Phantom_APT_Invalid_Sig_dBjftJeZ4CVP
+
+──────────────────────────────────────────────────
+JWT Format : header.payload.signature (separated by dots)
+Analyst Note: A JWT token has 3 base64url-encoded parts. Paste the full
+              token into the JWT Analyzer. The flag is in the payload.`,tools:['jwt'],
+    hint:'Paste the full JWT token (everything after "Bearer ") into the JWT Analyzer. The tool will decode and display the header and payload. Look for the flag field in the decoded JSON payload.'},
+
+  {id:12,tier:'int',pts:200,icon:'&#9939;',title:'The Obfuscated Script',tags:['DEFENSE EVASION','BASE64','REVERSE'],
+    desc:'To evade detection, PHANTOM ran a second PowerShell script using a doubly-obfuscated encoded command. Windows Security Event ID 4688 captured the process creation. The encoding was applied in two stages: <em>the string was first reversed, then Base64-encoded</em>. Reverse the decode process to recover the original command.',
+    ev:`$ Get-WinEvent -LogName Security -FilterXPath "*[System[EventID=4688]]" |
+  Where-Object { $_.Message -match "EncodedCommand" } | Select-Object -Last 5
+
+──────── Process Creation Event (Security Log) ────────────────────
+EventID      : 4688
+Time         : 2024-03-04 12:07:33
+Computer     : MERIDIAN-WS07
+Account      : MERIDIANBANK\\j.alderton
+
+New Process  : C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe
+Parent       : C:\\Windows\\explorer.exe
+
+Command Line:
+  powershell.exe -NoP -NonI -W Hidden -Exec Bypass
+                 -EncodedCommand fW4wMXQ0Y3N1ZmIwX2xsM2hzcjN3MHB7RVZJSA==
+
+──────────────────────────────────────────────────
+Analyst Note: The encoded command has been doubly obfuscated.
+              Step 1: Base64 decode it. Step 2: reverse the result.`,tools:['b64','reverse'],
+    hint:'Step 1: Base64 decode the -EncodedCommand argument. The result will look like scrambled text. Step 2: Reverse that decoded string using the String Reversal tool. The flag will appear.'},
+
+  {id:13,tier:'hard',pts:300,icon:'&#129504;',title:'The Memory Artifact',tags:['MEMORY FORENSICS','VOLATILITY3','HEX'],
+    desc:'A full 4 GB RAM image was acquired from MERIDIAN-WS07. Volatility3 extracted strings from <code>svchost.exe</code> (PID 1664), which shows signs of process injection. Among hundreds of API names and file paths, one string is anomalous — it consists entirely of hexadecimal characters and is far longer than any system string. Locate it and hex-decode it to recover the injected payload marker.',
+    ev:`$ vol3 -f meridian_ram_4gb.dmp windows.strings --pid 1664 2>/dev/null
+
+──────── Volatility3 — Process Strings (svchost.exe PID 1664) ────────────
+Offset        PID    String
+──────────────────────────────────────────────────────────
+0x2e1f0100    1664   svchost.exe -k netsvcs -p -s Schedule
+0x2e1f0200    1664   C:\\Windows\\System32\\en-US
+0x2e1f0300    1664   NtCreateThreadEx
+0x2e1f0400    1664   RtlCreateUserThread
+0x2e1f0500    1664   VirtualAllocEx
+0x2e1f0614    1664   EE2C183EPHANTOM_INJECTEDCDEE89
+0x2e1f0700    1664   kernel32.dll
+0x2e1f0800    1664   WriteProcessMemory
+0x2e1f0910    1664   484956457B6D336D3072795F34727431663463745F3378747234637433647D
+0x2e1f1000    1664   CreateRemoteThread
+0x2e1f1100    1664   OpenProcess
+0x2e1f1200    1664   NtUnmapViewOfSection
+0x2e1f1300    1664   C:\\Windows\\Temp\\.phantom_work
+0x2e1f1400    1664   WaitForSingleObject
+──────────────────────────────────────────────────────────
+Analyst Note: One memory string at offset 0x2e1f0910 is anomalous —
+              it contains only hex characters (0–9 and A–F) and is much
+              longer than any API/path string. Hex decode it.`,tools:['hex'],
+    hint:'One string at offset 0x2e1f0910 is distinctly different — it contains only characters 0–9 and A–F, with no spaces, and is much longer than API or path strings. Paste it directly into the Hex Decoder (continuous mode, no spaces needed).'},
+
+  {id:14,tier:'hard',pts:300,icon:'&#128444;',title:'The Hidden Implant',tags:['STEGANOGRAPHY','LSB','ZSTEG','BASE64'],
+    desc:'PHANTOM maintained persistence by embedding a secondary implant marker inside a corporate wallpaper image uploaded to the internal wiki. <code>zsteg</code> analysis revealed data hidden in the <em>red channel least-significant bit (LSB) plane</em>. The extracted string is encoded. Identify the encoding and decode it to reveal the implant marker.',
+    ev:`$ zsteg -a implant_wallpaper.png 2>/dev/null
+
+──────── zsteg Analysis: implant_wallpaper.png ────────────────────
+File          : implant_wallpaper.png (1920x1080, 24-bit RGB)
+SHA256        : b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3
+Uploaded To   : internal-wiki.meridianbank.com/images/ on 2024-03-04 13:38
+
+imagedata           .. no anomalies detected
+b1,r,lsb,xy        .. text: "SElWRXtzdDNnMF8xbXBsNG50X2QzdDNjdDNkfQ=="
+b1,g,lsb,xy        .. text: "\\x00\\x00\\x00\\x01\\x03\\x82\\xa1..."
+b1,b,lsb,xy        .. text: "\\x00\\x00\\x00\\x00\\x00\\x00..."
+b1,rgb,lsb,xy      .. text: "Corporate Wallpaper 2024"
+b2,r,lsb,xy        .. text: "\\xc4\\xa9\\x83\\x51\\x1a..."
+b4,r,lsb,xy        .. text: "8\\xc8\\x07\\xa3\\xf2..."
+
+[!] ANOMALY DETECTED: b1,r,lsb,xy returned readable ASCII text
+Analyst Note  : The LSB plane extracted a base64-encoded string.
+                Decode it to reveal the embedded implant marker.`,tools:['b64'],
+    hint:'The zsteg b1,r,lsb,xy channel extracted a readable ASCII text string. Examine its character set — it matches an encoding used in earlier challenges. Paste it into the appropriate decoder.'},
+
+  {id:15,tier:'hard',pts:300,icon:'&#128279;',title:'The Config Blob',tags:['MULTI-LAYER','REVERSE','ROT13','BASE64'],
+    desc:'Strings analysis of <code>phantom_implant_v3.bin</code> reveals a triple-encoded configuration blob embedded as a comment. The binary helpfully documents the encoding order: <em>reverse the plaintext, then ROT13 encode, then Base64 encode</em>. Reverse all three steps in the correct order to recover the plaintext config token.',
+    ev:`$ strings -n 8 phantom_implant_v3.bin | grep -v ".dll" | grep -v "Windows" | tail -20
+
+──────── Strings from phantom_implant_v3.bin ────────────────────
+Offset   String
+──────────────────────────────────────────────────────────
+0x007F20  PHANTOM-APT v3.1 Internal Build
+0x007F44  C2_HOST=185.234.219.47
+0x007F60  C2_PORT=8443
+0x007F70  SLEEP_JITTER=15
+0x007F80  # config_blob (triple-encoded):
+0x007F94  # fWEzeDBlb190YTFxMHBhM19lM2w0eV8xZWd7UklWVQ==
+0x007FB8  # encoding: Base64(ROT13(Reverse(plaintext)))
+0x007FD0  # decode order is the reverse of the above
+0x007FE8  mutex_name=PhantomGlobal2024
+
+──────────────────────────────────────────────────────────
+Analyst Note  : The binary itself documents the encoding order.
+                Decode order (reverse of encode): Base64 → ROT13 → Reverse`,tools:['b64','caesar','reverse'],
+    hint:'The binary tells you: encode order = reverse &rarr; ROT13 &rarr; Base64. Decode order is the reverse: (1) Base64 decode the blob, (2) ROT13 the result (use ROT-13 button), (3) reverse the string. Use all three tools in sequence.'},
+
+  {id:16,tier:'hard',pts:300,icon:'&#128505;',title:'The Registry Rootkit',tags:['WINDOWS REGISTRY','XOR','SHELLCODE'],
+    desc:'PHANTOM achieved kernel-level persistence by injecting a shellcode loader into a Winlogon registry notify key. The shellcode blob (Startup value) is XOR-encrypted. The operation codename is <em>PHANTOM WIRE</em>. Intelligence suggests the operators used the <em>second word of the operation codename</em> as the encryption key (4 characters).',
+    ev:`$ reg export "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon" phantom_reg.reg
+
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon]
+"AutoAdminLogon"="0"
+"DefaultUserName"="j.alderton"
+"DefaultDomainName"="MERIDIANBANK"
+"Userinit"="C:\\\\Windows\\\\system32\\\\userinit.exe,"
+"Shell"="explorer.exe"
+
+[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\Notify\\phantom]
+"Asynchronous"=dword:00000001
+"DllName"=hex:43,3a,5c,57,69,6e,64,6f,77,73,5c,54,65,6d,70,5c,70,68,61,6e,74,6f,6d,2e,64,6c,6c
+"Event"="Logon"
+"Impersonate"=dword:00000001
+"Startup"=hex:1F 00 04 00 2C 3B 61 22 66 3A 26 37 2E 16 21 2D 64 25 3E 26 67 2D 61 1A 33 7A 31 75 33 7A 36 38
+
+──────────────────────────────────────────────────
+Analyst Note  : The Startup value contains XOR-encrypted shellcode.
+                Operation codename is PHANTOM WIRE. The key is the
+                second word of the operation name (4 letters).`,tools:['xor'],
+    hint:'The Startup registry value (hex: type) is XOR-encrypted. The operation name is "PHANTOM WIRE" — use the second word as the key. Paste the hex value into the XOR Decryptor and enter the key.'},
+
+  {id:17,tier:'hard',pts:300,icon:'&#128123;',title:'Ghost Protocol',tags:['MULTI-STAGE','ROT13','HEX','BASE64','FINAL'],
+    desc:'The final artefact. An encrypted payload was recovered from a hidden volume on the file server <code>MERIDIAN-FS01</code>. This is the PHANTOM group’s final operator identification marker. The evidence file documents the encoding chain: <em>ROT13 the plaintext, hex-encode the result, then Base64-encode the hex string</em>. Reverse all three stages to close the case.',
+    ev:`$ binwalk -e final_exfil_payload.enc && cat _final_exfil_payload.enc.extracted/*
+
+──────── HIVE Incident Response — Final Payload Analysis ────────────────
+Case Ref      : HIVE-OPS-2024-PW-FINAL
+Analyst       : HIVE Forensics Team
+File          : final_exfil_payload.enc
+SHA256        : 1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2
+Recovered     : Encrypted volume on MERIDIAN-FS01 (10.0.1.20)
+Timestamp     : 2024-03-04 15:14:27
+
+──────── Extracted content ──────────────────────────────────────────
+NTU1NjQ5NTI3QjcwNzUzNDMxNjE1RjY1MzMzNDcwNjczMTMwNjE1RjcwMzA3QTYzNzkzMzY3MzM3RA==
+
+──────────────────────────────────────────────────
+Intel Recovery: This is the PHANTOM group's final identification marker.
+Encoding Used : Stage 1 → ROT13 the plaintext
+                Stage 2 → Hex-encode the result (no spaces, uppercase)
+                Stage 3 → Base64-encode the hex string
+Decode Order  : Base64 decode → Hex decode → ROT13 decode`,tools:['b64','hex','caesar'],
+    hint:'Decode order (reverse of encode): Stage 1 — Base64 decode. Stage 2 — Hex decode the result. Stage 3 — ROT13 decode that. Use Base64 Decoder, then Hex Decoder, then Caesar/ROT-13. Three tools, three stages.'},
+];
+
+const TIERS=[
+  {key:'easy',cls:'easy',lbl:'EASY',desc:'Initial triage — core decoding skills',pts:'100 pts each',ids:[1,2,3,4]},
+  {key:'int',cls:'int',lbl:'INTERMEDIATE',desc:'Deep-dive analysis — multi-technique challenges',pts:'200 pts each',ids:[5,6,7,8,9,10,11,12]},
+  {key:'hard',cls:'hard',lbl:'HARD',desc:'Expert forensics — multi-layer & chained decoding',pts:'300 pts each',ids:[13,14,15,16,17]},
+];
+
+function cardHtml(ch,tc){
+  const ok=state.solved.has(ch.id),op=state.open.has(ch.id);
+  const tids=TIERS.find(t=>t.key===ch.tier).ids;
+  const lk=tids.indexOf(ch.id)>0&&!state.solved.has(tids[tids.indexOf(ch.id)-1]);
+  return `<div class="card ${ch.tier}-t${ok?' ok-'+tc:''}${lk?' locked':''}" id="c${ch.id}">
+  <div class="ch" onclick="tog(${ch.id})">
+    <span class="cn">${String(ch.id).padStart(2,'0')}</span>
+    <div class="ci">${ok?'&#10003;':ch.icon}</div>
+    <div class="cm"><div class="ct">${ch.title}</div>
+    <div class="ctgs">${ch.tags.map(t=>`<span class="ctg ${tc}">${t}</span>`).join('')}${lk?'<span class="ctg" style="background:#f5f5f5;color:#999">&#128274;</span>':''}</div></div>
+    <div class="cr"><span class="cpts ${tc}">${ch.pts} PTS</span><span class="chev${op?' open':''}">&#9660;</span></div>
+  </div>
+  ${op?`<div class="cb">
+    ${ok?`<div class="okb ${tc}">&#10003; FLAG CAPTURED &mdash; +${ch.pts} POINTS</div>`:''}
+    <p class="desc">${ch.desc}</p>
+    <div class="slbl">EVIDENCE ARTIFACT</div>
+    <div class="evw"><div class="evt">
+      <span class="evd" style="background:#ef4444"></span>
+      <span class="evd" style="background:#f59e0b"></span>
+      <span class="evd" style="background:#22c55e"></span>
+      <span class="evf">forensic-evidence.log — HIVE-OPS-2024-PW-001</span>
+    </div><pre class="ev">${escH(ch.ev)}</pre></div>
+    ${ch.tools.length?`<div class="slbl">FORENSIC DECODER TOOLS</div>${ch.tools.map(t=>toolHtml(t,ch.id)).join('')}`:''}<button class="hb" onclick="togH(${ch.id})">&#128161; Request Analyst Hint</button>
+    <div class="hbox" id="h${ch.id}">${ch.hint}</div>
+    ${!ok?`<div class="slbl">SUBMIT FLAG</div>
+    <div class="fr">
+      <input class="fi" id="fi${ch.id}" placeholder="HIVE{...}" type="text" onkeydown="if(event.key==='Enter')sub(${ch.id})">
+      <button class="sb" id="btn${ch.id}" onclick="sub(${ch.id})">SUBMIT &#9654;</button>
+    </div>
+    <div class="ff" id="fb${ch.id}"></div>`:''}</div>`:''}
+</div>`;}
+
+function render(){
+  const eD=[1,2,3,4].every(i=>state.solved.has(i));
+  const iD=[5,6,7,8,9,10,11,12].every(i=>state.solved.has(i));
+  document.getElementById('root').innerHTML=TIERS.map((t,ti)=>{
+    const chs=CHS.filter(c=>t.ids.includes(c.id));
+    const sc=t.ids.filter(i=>state.solved.has(i)).length;
+    const lk=(ti===1&&!eD)||(ti===2&&!iD);
+    return `<div class="tier"><div class="tier-hdr">
+      <span class="tb ${t.cls}">${t.lbl}</span>
+      <div class="ti"><div class="tn">${t.desc}</div><div class="td">${t.pts} &middot; Challenges ${t.ids[0]}–${t.ids[t.ids.length-1]}</div></div>
+      <div class="tpw"><span class="tc">${sc}/${t.ids.length} solved</span><div class="tk"><div class="tf ${t.cls}" style="width:${sc/t.ids.length*100}%"></div></div></div>
+    </div>${lk?`<div class="tlock">&#128274; LOCKED — Complete the ${ti===1?'Easy':'Intermediate'} tier first</div>`:chs.map(ch=>cardHtml(ch,t.cls)).join('')}</div>`;
+  }).join('');
+  const ea=[1,2,3,4].filter(i=>state.solved.has(i)).length;
+  const it=[5,6,7,8,9,10,11,12].filter(i=>state.solved.has(i)).length;
+  const ha=[13,14,15,16,17].filter(i=>state.solved.has(i)).length;
+  document.getElementById('st-sc').textContent=state.score;
+  document.getElementById('st-fl').textContent=`${state.solved.size}/17`;
+  document.getElementById('st-ea').textContent=`${ea}/4`;
+  document.getElementById('st-in').textContent=`${it}/8`;
+  document.getElementById('st-ha').textContent=`${ha}/5`;
+}
+
+function tog(id){state.open.has(id)?state.open.delete(id):state.open.add(id);render();}
+function togH(id){const h=document.getElementById('h'+id);if(h)h.style.display=h.style.display==='block'?'none':'block';}
+
+async function sub(id){
+  const inp=document.getElementById('fi'+id);
+  const fb=document.getElementById('fb'+id);
+  const btn=document.getElementById('btn'+id);
+  const val=inp?inp.value.trim():'';
+  if(!val){fb.innerHTML='<span class="fer">&#9888; Enter a flag first.</span>';return;}
+  if(inp)inp.disabled=true;
+  if(btn){btn.textContent='Checking...';btn.disabled=true;}
+  try{
+    const res=await fetch('/api/check',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,flag:val})});
+    if(res.status===429){fb.innerHTML='<span class="fer">&#9888; Rate limited — wait 60 seconds.</span>';if(inp)inp.disabled=false;if(btn){btn.textContent='SUBMIT &#9654;';btn.disabled=false;}return;}
+    const d=await res.json();
+    if(d.correct){
+      state.solved.add(id);state.score+=PTS[id];state.open.add(id);
+      const tids=TIERS.find(t=>t.ids.includes(id)).ids;
+      const nx=tids[tids.indexOf(id)+1];if(nx)state.open.add(nx);
+      render();
+      if(state.solved.size===17){setTimeout(()=>{const v=document.getElementById('victory');v.style.display='block';document.getElementById('vsc').textContent=`${state.score} / 3500 PTS`;v.scrollIntoView({behavior:'smooth'});},400);}
+    }else{
+      fb.innerHTML='<span class="fer">&#10007; Incorrect — re-examine the evidence.</span>';
+      if(inp){inp.style.borderColor='var(--err)';setTimeout(()=>{inp.style.borderColor='';inp.disabled=false;},900);}
+      if(btn){btn.textContent='SUBMIT &#9654;';btn.disabled=false;}
+    }
+  }catch(e){
+    fb.innerHTML='<span class="fer">&#9888; Server unreachable.</span>';
+    if(inp)inp.disabled=false;
+    if(btn){btn.textContent='SUBMIT &#9654;';btn.disabled=false;}
+  }
+}
+
+render();
+</script>
+</body>
+</html>
