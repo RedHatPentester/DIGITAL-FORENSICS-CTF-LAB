@@ -1,0 +1,10 @@
+Meridian Financial Services — Ransomware Incident Questions
+
+1. What was the initial access vector and when did it occur?
+2. How long after the lure was opened did the C2 beacon start?
+3. Which internal host did the attacker pivot to?
+4. Where was data exfiltrated before encryption?
+5. What Windows security feature did the attacker disable first?
+6. What anti-forensics technique was used, and at what time?
+7. What is the victim ID from the ransom note?
+8. What does ID Ransomware identify the malware family as?
