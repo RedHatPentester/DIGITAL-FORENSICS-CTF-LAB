@@ -6,7 +6,7 @@ It was a Tuesday morning at Meridian Financial Services. Philip Green sat down a
 
 He never saw the PowerShell window. He never heard the outbound connection to 185.220.101.47. By 8:01 AM his machine was beaconing to a Tor exit node in Eastern Europe, and by 8:22 AM the attacker was walking the internal file server using Philip's own credentials.
 
-Two hundred megabytes of client records left the building silently over HTTPS to MEGA. Then came the encryption. Every file, every folder — sealed with a .lockbit extension. Shadow copies wiped. Defender disabled. Event logs cleared. His wallpaper replaced with a black screen and a ransom demand.
+Two hundred megabytes of client records left the building silently over HTTPS to MEGA. Then came the encryption. Every file, every folder , sealed with a .lockbit extension. Shadow copies wiped. Defender disabled. Event logs cleared. His wallpaper replaced with a black screen and a ransom demand.
 
 Philip stared at a countdown timer and a victim ID he'd never asked for: 4A9F2E8B-7C31-4D56-A091-F3E28C107B44.
 
