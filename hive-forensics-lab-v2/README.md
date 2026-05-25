@@ -4,7 +4,9 @@
 
 This investigation examines two email-based attacks targeting Sarfoa Bank Corp between 17–23 May 2024. Four exhibits of raw email evidence were reviewed.
 You begin with 100 points, and every hint costs 5. Solve it without hints to keep your full score.
+
 It’s designed like a competitive or CTF-style challenge; you get 3 coins per module, so use them carefully.
+
 When the coins are gone, you’re on your own, reinforcing the feel of a real investigation with limited resources.
 
 ---
