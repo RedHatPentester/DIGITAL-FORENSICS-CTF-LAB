@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HC-LAB :: Email Forensics — Hive Consult Ghana</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d1117;
+  --surf:#161b22;
+  --surf2:#1c2128;
+  --brd:#30363d;
+  --brd-dim:#21262d;
+  --txt:#e6edf3;
+  --txt2:#8b949e;
+  --txt3:#484f58;
+  --gold:#d4a017;
+  --gold-d:#9e6a03;
+  --gold-bg:#110d00;
+  --grn:#3fb950;
+  --grn-d:#238636;
+  --grn-bg:#091510;
+  --red:#f85149;
+  --red-d:#da3633;
+  --red-bg:#150808;
+  --amber:#e3b341;
+  --coral:#ff7b72;
+}
+html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'Courier New',Courier,monospace;overflow:hidden}
+
+/* TOPBAR */
+.topbar{
+  height:46px;
+  background:linear-gradient(90deg,#0a0f0a 240px,var(--surf) 240px);
+  border-bottom:1px solid #1a2e1a;
+  display:flex;align-items:center;padding:0 20px;gap:0;flex-shrink:0;z-index:10;
+}
+.t-logo{font-size:15px;font-weight:700;color:#3fb950;letter-spacing:.06em}
+.t-slash{color:#2a5c2a;margin:0 10px;font-size:13px}
+.t-case{font-size:11px;color:var(--txt2)}
+.t-gap{flex:1}
+.t-score-wrap{display:flex;align-items:center;gap:6px}
+.t-score-lbl{font-size:11px;color:#3a6b3a;letter-spacing:.06em}
+.t-score-val{
+  font-size:20px;font-weight:700;color:var(--gold);
+  min-width:44px;text-align:right;transition:color .3s;
+  font-variant-numeric:tabular-nums;
+}
+.t-score-val.flash{animation:scoreFlash .4s ease}
+@keyframes scoreFlash{0%,100%{transform:scale(1)}50%{transform:scale(1.25);color:var(--red)}}
+.t-vdiv{width:1px;height:22px;background:#1a3a1a;margin:0 18px}
+.coins-wrap{display:flex;align-items:center;gap:5px}
+.coin{
+  width:22px;height:22px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:700;
+  border:1.5px solid #3fb950;color:#3fb950;
+  background:#091510;transition:all .25s;
+  cursor:default;user-select:none;
+}
+.coin.spent{border-color:var(--brd-dim);color:var(--txt3);background:transparent}
+.coin-lbl{font-size:10px;color:#3a6b3a;margin-left:3px;letter-spacing:.05em}
+
+/* LAYOUT */
+.app{display:flex;flex-direction:column;height:100vh}
+.body{display:flex;flex:1;overflow:hidden}
+
+/* SIDEBAR */
+.sidebar{
+  width:240px;background:#0a0f0a;border-right:1px solid #1a2e1a;
+  flex-shrink:0;overflow-y:auto;padding:0 0 16px;
+  display:flex;flex-direction:column;
+}
+/* LOGO */
+.sb-logo-wrap{padding:18px 16px 0;text-align:center}
+.sb-logo-img{width:110px;height:110px;object-fit:contain;border-radius:10px;background:#fff;padding:8px;display:block;margin:0 auto}
+.sb-logo-divider{height:1px;background:linear-gradient(90deg,transparent,#2a5c2a,transparent);margin:14px 0 0}
+
+/* SECTION LABEL */
+.sb-section-lbl{
+  font-size:9px;letter-spacing:.14em;font-weight:700;
+  color:#3a6b3a;padding:12px 16px 6px;
+  display:flex;align-items:center;gap:6px;
+}
+.sb-section-icon{font-size:6px;color:#3fb950}
+
+/* MODULE ITEMS */
+.sb-mod{
+  padding:10px 14px 0;cursor:pointer;
+  border-left:3px solid transparent;
+  transition:background .15s,border-color .15s;
+  background:transparent;
+}
+.sb-mod:hover{background:#0f1a0f}
+.sb-mod.active{background:#0f1a0f}
+.sb-mod.active.beg-active{border-left-color:#3fb950}
+.sb-mod.active.int-active{border-left-color:#e3b341}
+.sb-mod.active.adv-active{border-left-color:#f85149}
+.sb-mod.done .sb-name{color:#3fb950}
+.sb-mod-inner{display:flex;align-items:center;justify-content:space-between;padding-bottom:8px}
+.sb-mod-left{display:flex;align-items:flex-start;gap:9px}
+.sb-mod-num{font-size:9px;color:#3a6b3a;font-family:"Courier New",monospace;letter-spacing:.04em}
+.sb-name{font-size:12px;color:#7a9e7a;margin-top:2px;font-family:"Courier New",monospace;line-height:1.3}
+.sb-mod.active .sb-name{color:#e6edf3}
+.sb-stat{font-size:10px;color:#3a6b3a;margin-top:3px;font-family:"Courier New",monospace}
+.sb-mod-arrow{font-size:18px;color:#2a5c2a;transition:all .15s;line-height:1}
+.sb-mod.active .sb-mod-arrow{color:#3fb950;transform:translateX(2px)}
+
+/* LEVEL PILLS */
+.sb-pill{
+  font-size:8px;font-weight:700;letter-spacing:.08em;
+  padding:2px 5px;border-radius:3px;margin-top:3px;flex-shrink:0;
+  font-family:"Courier New",monospace;
+}
+.sb-pill-beg{background:#091510;color:#3fb950;border:1px solid #1a4a1a}
+.sb-pill-int{background:#110d00;color:#e3b341;border:1px solid #4a3800}
+.sb-pill-adv{background:#150808;color:#f85149;border:1px solid #4a1a1a}
+
+/* PROGRESS BAR */
+.sb-prog-bar{height:2px;background:#1a2e1a;margin:0 0 2px;border-radius:1px;overflow:hidden}
+.sb-prog-fill{height:100%;border-radius:1px;transition:width .4s ease}
+.sb-prog-beg{background:#3fb950}
+.sb-prog-int{background:#e3b341}
+.sb-prog-adv{background:#f85149}
+
+/* ANALYST CARD */
+.sb-analyst-card{
+  margin:auto 12px 0;
+  background:#0f1a0f;border:1px solid #1a3a1a;
+  border-radius:8px;padding:12px;
+  display:flex;align-items:center;gap:10px;
+}
+.sb-analyst-avatar{
+  width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,#1a4a1a,#3fb950);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:#e6edf3;
+  flex-shrink:0;letter-spacing:.04em;
+  font-family:"Courier New",monospace;
+}
+.sb-analyst-info{flex:1;min-width:0}
+.sb-analyst-name{font-size:11px;color:#e6edf3;font-weight:700;font-family:"Courier New",monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-analyst-role{font-size:9px;color:#3fb950;margin-top:1px;font-family:"Courier New",monospace;letter-spacing:.04em}
+.sb-analyst-org{font-size:9px;color:#3a6b3a;margin-top:1px;font-family:"Courier New",monospace}
+
+/* CONTENT */
+.content{flex:1;overflow-y:auto;padding:22px 28px}
+
+/* scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--brd);border-radius:3px}
+
+/* MODULE HEADER */
+.mod-hdr{
+  display:flex;align-items:center;gap:10px;
+  padding-bottom:14px;border-bottom:1px solid var(--brd-dim);margin-bottom:20px;
+}
+.mod-badge{
+  font-size:9px;font-weight:700;letter-spacing:.08em;
+  padding:2px 9px;border-radius:3px;
+}
+.badge-beg{color:var(--grn);border:1px solid var(--grn-d);background:var(--grn-bg)}
+.badge-int{color:var(--amber);border:1px solid #9e6a03;background:var(--gold-bg)}
+.badge-adv{color:var(--coral);border:1px solid var(--red-d);background:var(--red-bg)}
+.mod-title{font-size:17px;font-weight:700;color:var(--txt)}
+.mod-prog{margin-left:auto;font-size:11px;color:var(--txt3)}
+
+/* QUESTION CARD */
+.q-card{
+  background:var(--surf);border:1px solid var(--brd-dim);
+  border-radius:6px;margin-bottom:14px;overflow:hidden;
+  transition:border-color .3s;
+}
+.q-card.correct{border-color:var(--grn-d)}
+.q-card.wrong{border-color:var(--red-d)}
+.q-card.partial{border-color:var(--gold-d)}
+
+.q-hdr{
+  display:flex;align-items:center;gap:8px;
+  padding:9px 14px;background:var(--surf2);
+  border-bottom:1px solid var(--brd-dim);
+}
+.q-num{font-size:10px;color:var(--txt3);font-weight:700}
+.q-exh{
+  font-size:10px;color:var(--amber);
+  border:1px solid var(--gold-d);padding:1px 6px;border-radius:2px;
+}
+.q-pts{font-size:10px;color:var(--txt3);margin-left:auto}
+.q-badge{
+  font-size:10px;font-weight:700;padding:1px 8px;border-radius:2px;margin-left:6px;
+}
+.qb-correct{background:var(--grn-bg);color:var(--grn);border:1px solid var(--grn-d)}
+.qb-wrong{background:var(--red-bg);color:var(--red);border:1px solid var(--red-d)}
+.qb-partial{background:var(--gold-bg);color:var(--gold);border:1px solid var(--gold-d)}
+
+.q-body{padding:14px}
+.q-text{font-size:13px;color:var(--txt);line-height:1.7;margin-bottom:12px}
+
+/* EVIDENCE */
+.evidence{
+  background:#010409;border:1px solid var(--brd-dim);border-radius:4px;
+  padding:11px 13px;font-size:11px;color:#7ee787;
+  line-height:1.65;margin-bottom:12px;
+  white-space:pre-wrap;word-break:break-word;position:relative;
+}
+.evid-lbl{
+  position:absolute;top:7px;right:10px;
+  font-size:9px;color:var(--txt3);letter-spacing:.06em;
+}
+
+/* HINT SYSTEM */
+.hint-row{display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.hint-btn{
+  font-family:'Courier New',monospace;font-size:11px;
+  padding:4px 11px;border-radius:3px;cursor:pointer;
+  display:inline-flex;align-items:center;gap:5px;
+  transition:background .15s;
+}
+.hint-btn.available{
+  border:1px solid var(--gold-d);background:var(--gold-bg);color:var(--gold);
+}
+.hint-btn.available:hover{background:#1e1500}
+.hint-btn.used{
+  border:1px solid var(--brd-dim);background:transparent;
+  color:var(--txt3);cursor:default;
+}
+.hint-btn.locked{
+  border:1px solid var(--brd-dim);background:transparent;
+  color:var(--txt3);cursor:not-allowed;opacity:.5;
+}
+.hint-cost{font-size:9px;color:var(--gold-d)}
+.hint-bubble{
+  background:var(--gold-bg);border:1px solid var(--gold-d);
+  border-radius:4px;padding:9px 13px;font-size:12px;
+  color:var(--amber);line-height:1.6;margin-bottom:9px;
+}
+.hint-tag{font-size:9px;color:var(--gold-d);letter-spacing:.06em;display:block;margin-bottom:4px}
+
+/* ANSWER AREA */
+.ans-lbl{
+  font-size:9px;color:var(--txt3);letter-spacing:.08em;
+  text-transform:uppercase;margin-bottom:6px;
+}
+.ans-input{
+  width:100%;background:#010409;
+  border:1px solid var(--brd);border-radius:4px;
+  padding:9px 12px;font-size:12px;
+  font-family:'Courier New',monospace;
+  color:var(--txt);resize:vertical;min-height:64px;
+  transition:border-color .15s;
+}
+.ans-input:focus{outline:none;border-color:var(--gold-d)}
+.ans-input:disabled{opacity:.45;cursor:not-allowed}
+.submit-row{display:flex;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap}
+.submit-btn{
+  font-family:'Courier New',monospace;font-size:12px;
+  padding:7px 18px;border-radius:4px;font-weight:700;
+  border:1px solid var(--grn-d);background:var(--grn-bg);
+  color:var(--grn);cursor:pointer;letter-spacing:.04em;
+  transition:background .15s;
+}
+.submit-btn:hover{background:#0f2212}
+.submit-btn:disabled{opacity:.35;cursor:not-allowed}
+.submit-msg{font-size:11px;line-height:1.4}
+.sm-correct{color:var(--grn)}
+.sm-wrong{color:var(--red)}
+.sm-partial{color:var(--gold)}
+
+/* CORRECT STATE - show answer frozen */
+.ans-frozen{
+  background:#010409;border:1px solid var(--grn-d);
+  border-radius:4px;padding:9px 12px;font-size:12px;
+  color:var(--grn);line-height:1.6;white-space:pre-wrap;word-break:break-word;
+}
+
+/* COMPLETE BANNER */
+.complete{
+  background:var(--grn-bg);border:1px solid var(--grn-d);
+  border-radius:6px;padding:18px 22px;margin-bottom:20px;text-align:center;
+}
+.complete-title{font-size:18px;font-weight:700;color:var(--grn);letter-spacing:.04em}
+.complete-sub{font-size:12px;color:var(--txt2);margin-top:6px}
+
+/* NO COINS WARNING */
+.no-coins{
+  font-size:11px;color:var(--red);
+  border:1px solid var(--red-d);background:var(--red-bg);
+  padding:4px 10px;border-radius:3px;display:inline-block;margin-bottom:8px;
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <span class="t-logo">HC-LAB</span>
+    <span class="t-slash">//</span>
+    <span class="t-case">EMAIL FORENSICS &nbsp;&middot;&nbsp; CASE #HC-2024-0518 &nbsp;&middot;&nbsp; F. JOHNSON ESQ. &nbsp;&middot;&nbsp; HIVE CONSULT, GH</span>
+    <div class="t-gap"></div>
+    <div class="t-score-wrap">
+      <span class="t-score-lbl">SCORE</span>
+      <span class="t-score-val" id="scoreEl">100</span>
+    </div>
+    <div class="t-vdiv"></div>
+    <div class="coins-wrap">
+      <span class="coin" id="c0" title="Hint coin">&#9685;</span>
+      <span class="coin" id="c1" title="Hint coin">&#9685;</span>
+      <span class="coin" id="c2" title="Hint coin">&#9685;</span>
+      <span class="coin-lbl">COINS</span>
+    </div>
+  </div>
+
+  <div class="body">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <!-- LOGO -->
+      <div class="sb-logo-wrap">
+        <img src="data:image/jpeg;base64,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" alt="Hive Consult Logo" class="sb-logo-img">
+        <div class="sb-logo-divider"></div>
+      </div>
+
+      <!-- MODULES LABEL -->
+      <div class="sb-section-lbl">
+        <span class="sb-section-icon">&#9632;</span> MODULES
+      </div>
+
+      <!-- MODULE ITEMS -->
+      <div class="sb-mod active" id="sb0" onclick="gotoMod(0)">
+        <div class="sb-mod-inner">
+          <div class="sb-mod-left">
+            <div class="sb-pill sb-pill-beg">BEG</div>
+            <div>
+              <div class="sb-mod-num">01</div>
+              <div class="sb-name">header forensics</div>
+              <div class="sb-stat" id="ss0">0 / 3 solved</div>
+            </div>
+          </div>
+          <div class="sb-mod-arrow" id="arr0">&#8250;</div>
+        </div>
+        <div class="sb-prog-bar"><div class="sb-prog-fill sb-prog-beg" id="spf0" style="width:0%"></div></div>
+      </div>
+
+      <div class="sb-mod" id="sb1" onclick="gotoMod(1)">
+        <div class="sb-mod-inner">
+          <div class="sb-mod-left">
+            <div class="sb-pill sb-pill-beg">BEG</div>
+            <div>
+              <div class="sb-mod-num">02</div>
+              <div class="sb-name">phishing detection</div>
+              <div class="sb-stat" id="ss1">0 / 2 solved</div>
+            </div>
+          </div>
+          <div class="sb-mod-arrow" id="arr1">&#8250;</div>
+        </div>
+        <div class="sb-prog-bar"><div class="sb-prog-fill sb-prog-beg" id="spf1" style="width:0%"></div></div>
+      </div>
+
+      <div class="sb-mod" id="sb2" onclick="gotoMod(2)">
+        <div class="sb-mod-inner">
+          <div class="sb-mod-left">
+            <div class="sb-pill sb-pill-int">INT</div>
+            <div>
+              <div class="sb-mod-num">03</div>
+              <div class="sb-name">spf / dkim / dmarc</div>
+              <div class="sb-stat" id="ss2">0 / 2 solved</div>
+            </div>
+          </div>
+          <div class="sb-mod-arrow" id="arr2">&#8250;</div>
+        </div>
+        <div class="sb-prog-bar"><div class="sb-prog-fill sb-prog-int" id="spf2" style="width:0%"></div></div>
+      </div>
+
+      <div class="sb-mod" id="sb3" onclick="gotoMod(3)">
+        <div class="sb-mod-inner">
+          <div class="sb-mod-left">
+            <div class="sb-pill sb-pill-adv">ADV</div>
+            <div>
+              <div class="sb-mod-num">04</div>
+              <div class="sb-name">ctf &mdash; accra deception</div>
+              <div class="sb-stat" id="ss3">0 / 2 solved</div>
+            </div>
+          </div>
+          <div class="sb-mod-arrow" id="arr3">&#8250;</div>
+        </div>
+        <div class="sb-prog-bar"><div class="sb-prog-fill sb-prog-adv" id="spf3" style="width:0%"></div></div>
+      </div>
+
+      <!-- ANALYST CARD -->
+      <div class="sb-analyst-card">
+        <div class="sb-analyst-avatar">FJE</div>
+        <div class="sb-analyst-info">
+          <div class="sb-analyst-name">Florence Johnson Esq.</div>
+          <div class="sb-analyst-role">Senior Analyst</div>
+          <div class="sb-analyst-org">Hive Consult, Ghana</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content" id="content"></div>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+// UTILS
+// ─────────────────────────────────────────────
+function esc(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ─────────────────────────────────────────────
+// DATA — 9 QUESTIONS
+// ─────────────────────────────────────────────
+const MODS = [
+  {id:0, name:'header forensics',      level:'BEGINNER',     badge:'badge-beg', qIds:[0,1,2]},
+  {id:1, name:'phishing detection',    level:'BEGINNER',     badge:'badge-beg', qIds:[3,4]},
+  {id:2, name:'spf / dkim / dmarc',   level:'INTERMEDIATE', badge:'badge-int', qIds:[5,6]},
+  {id:3, name:'ctf \u2014 accra deception', level:'ADVANCED', badge:'badge-adv', qIds:[7,8]}
+];
+
+const QS = [
+  {
+    id:0, mod:0, num:'Q-01', exh:'EXHIBIT A', pts:10,
+    text:'Identify the header field that reveals the attacker\'s true originating IP address. State the exact field name and its value.',
+    evid:
+`Delivered-To: florence.johnson@sarfoabank.corp
+Received: from mail.sarfoabank.corp (192.168.10.5)
+   by mx.sarfoabank.corp with ESMTP id x7si123456ghm
+   Sat, 18 May 2024 09:14:32 +0000 (UTC)
+Received: from smtp.fakebanking-gh.net (41.66.185.22)
+   by mail.sarfoabank.corp with ESMTP id a1bc23
+   Sat, 18 May 2024 09:14:28 +0000 (UTC)
+Received: from [197.255.40.11] (unknown)
+   by smtp.fakebanking-gh.net with ESMTPA
+   Sat, 18 May 2024 09:14:20 +0000 (UTC)
+Message-ID: <20240518091420.K8X92@fakebanking-gh.net>
+Date: Fri, 17 May 2024 08:00:00 +0000
+From: "Standard Chartered Ghana" <security@stanchart-gh.com>
+Reply-To: collect-data@fakebanking-gh.net
+To: florence.johnson@sarfoabank.corp
+Subject: [URGENT] Verify your account immediately
+X-Originating-IP: 197.255.40.11
+X-Mailer: PHPMailer 6.1.5
+MIME-Version: 1.0
+Content-Type: text/html; charset=UTF-8`,
+    hints:[
+      'Extended X- headers carry non-standard metadata added by mail servers. Look past the Received blocks for a header whose name explicitly describes what it records.',
+      'Received headers show which servers relayed the email, but a separate field was added specifically to log the client IP at the point of first submission. Its name contains the word "Originating".',
+      'The field is X-Originating-IP. You still need to read its value from the exhibit and confirm why this is more reliable than the first Received block IP.'
+    ],
+    keys:['x-originating-ip','197.255.40.11'],
+    need:2
+  },
+  {
+    id:1, mod:0, num:'Q-02', exh:'EXHIBIT A', pts:10,
+    text:'Map the full email delivery path in chronological order — from the attacker\'s machine to Florence Johnson Esq.\'s mailbox. List every server hop.',
+    evid:null,
+    hints:[
+      'Received headers stack newest-first in an email. To reconstruct chronological order, read them from bottom to top.',
+      'There are 3 Received blocks in Exhibit A. Extract the sending hostname or IP from each. Start at the bottom (earliest) and work upward.',
+      'You have the right idea if you read bottom-to-top. The path begins at [197.255.40.11] and ends at mx.sarfoabank.corp — name all 4 points including both endpoints.'
+    ],
+    keys:['fakebanking-gh','mail.hiveconsult','mx.hiveconsult','197.255.40.11'],
+    need:3
+  },
+  {
+    id:2, mod:0, num:'Q-03', exh:'EXHIBIT A', pts:10,
+    text:'The Date header and the Received timestamps contradict each other. Describe the exact discrepancy and name the email spoofing technique this represents.',
+    evid:null,
+    hints:[
+      'Compare the value of the "Date:" field against any "Received:" timestamp. Look at the day of the month — are they on the same calendar date?',
+      'The Date field reads Fri 17 May, but every Received header reads Sat 18 May. Quantify the gap in hours. Then ask: why would an attacker alter this field?',
+      'The gap is approximately 25 hours. You still need to name the technique — what is it called when an attacker deliberately sets a false timestamp to manipulate detection systems?'
+    ],
+    keys:['17','18','backdat','timestamp manipulat','manipulat','spoofing'],
+    need:2
+  },
+  {
+    id:3, mod:1, num:'Q-04', exh:'EXHIBIT B', pts:10,
+    text:'The sender domain impersonates Hive Consult using a domain registration trick. State the fake domain, the legitimate domain, and the specific technique name.',
+    evid:
+`From: "IT Department - Hive Consult" <it-support@hiveconsult-helpdesk.net>
+Subject: [ACTION REQUIRED] Microsoft 365 Password Expiring in 2 Hours
+Date: Mon, 20 May 2024 07:30:00 +0000
+To: florence.johnson@sarfoabank.corp
+
+Dear Florence Johnson Esq.,
+
+Your Microsoft 365 password will expire in 2 hours.
+Failure to update will result in PERMANENT account suspension.
+
+Click the link below IMMEDIATELY to reset your password:
+
+https://hiveconsult-m365-reset.pages.dev/login?user=florence_johnson
+
+If you do not act, your account and all associated Hive Consult
+files will be lost.
+
+Regards,
+IT Support Team - Hive Consult Ghana Ltd
+Tel: +233 302 000 000`,
+    hints:[
+      'Read the From: header domain character by character. Compare it against what an authentic Hive Consult staff email domain should look like — including the country-code TLD.',
+      'Legitimate Hive Consult addresses end in @sarfoabank.corp. The attacker registered a lookalike that swaps the TLD and appends an extra word. Identify both exact domains.',
+      'You have both domains — now name the technique. What is the category of attack where an adversary registers a domain that closely mimics a legitimate one to deceive users?'
+    ],
+    keys:['hiveconsult-helpdesk.net','sarfoabank.corp','typosquat'],
+    need:2
+  },
+  {
+    id:4, mod:1, num:'Q-05', exh:'EXHIBIT B', pts:10,
+    text:'The phishing URL pre-populates a query parameter with Nana\'s username. Identify the attack category this represents and explain how the attacker most likely gathered this information.',
+    evid:null,
+    hints:[
+      'Examine the full URL in the email body. Focus on the query string — a parameter is already filled in with a specific person\'s identifier before the victim even clicks.',
+      '?user=florence_johnson proves the attacker already knew the target\'s username. This distinguishes it from mass phishing. What is the term for phishing aimed at a named individual?',
+      'You have the attack category — now explain the intelligence gathering. How does an attacker find a specific person\'s username and email before launching the attack? Think about publicly available sources.'
+    ],
+    keys:['spear','osint','target','reconn','linkedin'],
+    need:2
+  },
+  {
+    id:5, mod:2, num:'Q-06', exh:'EXHIBIT C', pts:10,
+    text:'All three email authentication checks failed. For a financial institution, rank the three failures by severity from most to least critical, and justify each position in your ranking.',
+    evid:
+`Authentication-Results: mx.sarfoabank.corp;
+   spf=fail (domain of stanchart-gh.com does not designate
+       41.66.185.22 as permitted sender)
+       smtp.mailfrom=security@stanchart-gh.com;
+   dkim=none (no DKIM signature found);
+   dmarc=fail (p=REJECT) header.from=stanchart-gh.com;
+
+Received-SPF: Fail (mx.sarfoabank.corp: domain of
+   stanchart-gh.com does not designate 41.66.185.22 as
+   permitted sender) client-ip=41.66.185.22;`,
+    hints:[
+      'Each protocol protects a different layer: SPF checks if the sending IP is authorized, DKIM verifies message integrity via cryptographic signature, DMARC sets the enforcement policy for when the others fail.',
+      'DMARC p=REJECT is the domain owner\'s explicit instruction to reject the email. If that instruction was ignored, it means the entire authentication enforcement stack was bypassed. Which failure carries the broadest systemic implication?',
+      'You can rank them now. Think about which failure, if properly enforced, would have prevented the email from being delivered at all — that is your most severe. Justify why each ranks where it does.'
+    ],
+    keys:['dmarc','spf','dkim','reject','policy','sever'],
+    need:3
+  },
+  {
+    id:6, mod:2, num:'Q-07', exh:'EXHIBIT C', pts:10,
+    text:'Despite a DMARC policy of p=REJECT, this email was successfully delivered to the inbox. Provide two technically distinct explanations for how this delivery failure occurred.',
+    evid:null,
+    hints:[
+      'Think from the receiving server\'s side. What configuration determines whether a server actually enforces DMARC policies it receives — and what happens when that configuration is permissive?',
+      'Consider two separate failure modes: one related to the receiving organization\'s mail gateway settings, and one related to exceptions or overrides that could bypass the policy check entirely.',
+      'You are on the right track if you have one answer about DMARC monitoring mode and one about filter exceptions. Make sure each explanation is technically distinct — not just two ways of saying the same thing.'
+    ],
+    keys:['none','monitor','whitelist','misconfigur','bypass','exception','gateway'],
+    need:2
+  },
+  {
+    id:7, mod:3, num:'Q-08', exh:'EXHIBIT D', pts:15,
+    text:'A bulletproof hosting relay server is present in the email path. Identify it, define bulletproof hosting, and explain precisely why threat actors targeting Hive Consult would prefer this infrastructure.',
+    evid:
+`Return-Path: <florence.johnson@hiveconsult-gh.net>
+Received: from mail.hiveconsult-gh.net (197.255.90.44)
+   by mx.sarfoabank.corp with ESMTP
+   Thu, 23 May 2024 14:02:11 +0000 (UTC)
+Received: from smtp-relay.bulletproof-hosting.ru (91.108.4.18)
+   by mail.hiveconsult-gh.net with ESMTP
+   Thu, 23 May 2024 14:01:58 +0000 (UTC)
+Received: from workstation-07.local (197.255.90.44)
+   by smtp-relay.bulletproof-hosting.ru
+   Thu, 23 May 2024 14:01:45 +0000 (UTC)
+From: "Florence Johnson Esq. - CEO" <florence.johnson@hiveconsult-gh.net>
+To: accounts@sarfoabank.corp
+Reply-To: urgent-transfer@proton.me
+Subject: URGENT - Wire Transfer GHS 85,000 Today
+X-Originating-IP: 197.255.90.44
+X-Mailer: Outlook 16.0 (spoofed)
+Authentication-Results: mx.sarfoabank.corp;
+   spf=fail; dkim=none; dmarc=fail (p=REJECT)`,
+    hints:[
+      'Look at the middle Received block — the relay between the attacker\'s workstation and the spoofed Hive Consult mail server. Its full hostname is self-descriptive.',
+      'The relay is smtp-relay.bulletproof-hosting.ru. The word "bulletproof" in hosting refers to a provider\'s relationship with abuse reports and law enforcement. What does "bulletproof" mean in this context?',
+      'You have the server name and the definition — now make the connection specific to Hive Consult. Why is this type of relay especially dangerous for an organization investigating the attack and trying to shut it down?'
+    ],
+    keys:['bulletproof-hosting.ru','abuse','takedown','law enforcement','persist','anonymous'],
+    need:2
+  },
+  {
+    id:8, mod:3, num:'Q-09', exh:'EXHIBIT A + D', pts:15,
+    text:'Cross-reference Exhibits A and D. Both attack originating IPs fall within the same /16 subnet. State the subnet in CIDR notation and explain what this pattern suggests about the relationship between the two incidents targeting Hive Consult.',
+    evid:
+`// EXHIBIT A — X-Originating-IP: 197.255.40.11
+// EXHIBIT D — X-Originating-IP: 197.255.90.44
+
+// A /16 subnet: first two octets are fixed.
+// CIDR format:  x.x.0.0/16
+// Example:      10.20.0.0/16 covers 10.20.0.0 - 10.20.255.255`,
+    hints:[
+      'A /16 subnet means the first two octets of the IP are shared. Write out both IPs and compare octet by octet — identify which octets match across both.',
+      '197.255.40.11 and 197.255.90.44 both begin with 197.255. The /16 subnet in CIDR notation therefore starts with those two octets followed by 0.0/16.',
+      'You have the subnet. Now build the forensic argument: what does it mean operationally when two separate attacks against the same organization originate from the same /16 block? Consider ISP allocation, VPN providers, and threat actor infrastructure.'
+    ],
+    keys:['197.255.0.0','197.255','/16','same actor','campaign','coordinated','isp','vpn'],
+    need:2
+  }
+];
+
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
+const S = {
+  score: 100,
+  curMod: 0,
+  coins: [3,3,3,3],
+  hintsShown: QS.map(()=>0),
+  answers: QS.map(()=>({text:'',status:'pending',submitted:false}))
+};
+
+// ─────────────────────────────────────────────
+// SCORE
+// ─────────────────────────────────────────────
+function deduct(n){
+  S.score = Math.max(0, S.score - n);
+  const el = document.getElementById('scoreEl');
+  el.textContent = S.score;
+  el.classList.remove('flash');
+  void el.offsetWidth;
+  el.classList.add('flash');
+  setTimeout(()=>el.classList.remove('flash'),450);
+}
+
+// ─────────────────────────────────────────────
+// COINS
+// ─────────────────────────────────────────────
+function renderCoins(){
+  const rem = S.coins[S.curMod];
+  for(let i=0;i<3;i++){
+    const c = document.getElementById('c'+i);
+    if(c) c.className = 'coin'+(i<rem?'':' spent');
+  }
+}
+
+// ─────────────────────────────────────────────
+// ANSWER CHECK
+// ─────────────────────────────────────────────
+function check(qId, txt){
+  const q = QS[qId];
+  const low = txt.toLowerCase();
+  const matched = q.keys.filter(k=>low.includes(k.toLowerCase())).length;
+  if(matched >= q.need) return 'correct';
+  if(matched >= 1) return 'partial';
+  return 'wrong';
+}
+
+// ─────────────────────────────────────────────
+// SIDEBAR
+// ─────────────────────────────────────────────
+const MOD_LEVEL_CLASS = ['beg-active','beg-active','int-active','adv-active'];
+function updateSidebar(){
+  MODS.forEach((m,mi)=>{
+    const solved = m.qIds.filter(qi=>S.answers[qi].status==='correct').length;
+    const total = m.qIds.length;
+    const el = document.getElementById('ss'+mi);
+    if(el) el.textContent = solved+' / '+total+' solved';
+    const sb = document.getElementById('sb'+mi);
+    if(sb){
+      let cls = 'sb-mod';
+      if(mi===S.curMod) cls += ' active '+MOD_LEVEL_CLASS[mi];
+      if(solved===total) cls += ' done';
+      sb.className = cls;
+    }
+    const pf = document.getElementById('spf'+mi);
+    if(pf) pf.style.width = (total>0 ? Math.round(solved/total*100) : 0)+'%';
+  });
+}
+
+// ─────────────────────────────────────────────
+// RENDER
+// ─────────────────────────────────────────────
+function render(){
+  renderCoins();
+  updateSidebar();
+  const mod = MODS[S.curMod];
+  const solved = mod.qIds.filter(qi=>S.answers[qi].status==='correct').length;
+  const allDone = QS.every(q=>S.answers[q.id].status==='correct');
+  let h = '';
+
+  if(allDone){
+    h += `<div class="complete">
+      <div class="complete-title">// INVESTIGATION COMPLETE</div>
+      <div class="complete-sub">All 9 questions answered &nbsp;&middot;&nbsp; Final score: ${S.score} pts &nbsp;&middot;&nbsp; Analyst: Florence Johnson Esq. &nbsp;&middot;&nbsp; Hive Consult, Ghana</div>
+    </div>`;
+  }
+
+  h += `<div class="mod-hdr">
+    <span class="mod-badge ${mod.badge}">${mod.level}</span>
+    <span class="mod-title">// ${mod.name}</span>
+    <span class="mod-prog">${solved} / ${mod.qIds.length} solved</span>
+  </div>`;
+
+  mod.qIds.forEach(qId=>{
+    const q = QS[qId];
+    const a = S.answers[qId];
+    const st = a.status;
+    const isCorrect = st==='correct';
+    const noCoins = S.coins[S.curMod]===0;
+
+    let cardClass = 'q-card'+(st==='correct'?' correct':st==='wrong'?' wrong':st==='partial'?' partial':'');
+    h += `<div class="${cardClass}">`;
+
+    // Q HEADER
+    let badge='';
+    if(a.submitted){
+      if(st==='correct') badge='<span class="q-badge qb-correct">&#10003; CORRECT</span>';
+      else if(st==='partial') badge='<span class="q-badge qb-partial">~ PARTIAL</span>';
+      else if(st==='wrong')   badge='<span class="q-badge qb-wrong">&#10007; WRONG</span>';
+    }
+    h += `<div class="q-hdr">
+      <span class="q-num">${q.num}</span>
+      <span class="q-exh">${q.exh}</span>
+      <span class="q-pts">${q.pts} pts</span>
+      ${badge}
+    </div>`;
+
+    h += `<div class="q-body">`;
+    h += `<div class="q-text">${q.text}</div>`;
+
+    if(q.evid){
+      h += `<div class="evidence"><span class="evid-lbl">${q.exh}</span>${esc(q.evid)}</div>`;
+    }
+
+    // HINTS (only if not correct)
+    if(!isCorrect){
+      if(noCoins && S.hintsShown[qId]===0){
+        h += `<div class="no-coins">&#9685; No coins remaining for this module. Solve it on your own.</div>`;
+      }
+      h += `<div class="hint-row">`;
+      for(let hi=0;hi<3;hi++){
+        const shown = S.hintsShown[qId]>hi;
+        if(shown){
+          h += `<span class="hint-btn used">hint ${hi+1} used</span>`;
+        } else if(noCoins){
+          h += `<span class="hint-btn locked" title="No coins left">hint ${hi+1}</span>`;
+        } else {
+          h += `<span class="hint-btn available" onclick="unlockHint(${qId},${hi})" title="Costs 1 coin and 5 points">hint ${hi+1} <span class="hint-cost">-5pts</span></span>`;
+        }
+      }
+      h += `</div>`;
+
+      for(let hi=0;hi<S.hintsShown[qId];hi++){
+        h += `<div class="hint-bubble"><span class="hint-tag">HINT ${hi+1} //</span>${q.hints[hi]}</div>`;
+      }
+    }
+
+    // ANSWER AREA
+    if(isCorrect){
+      h += `<div class="ans-lbl">// your answer</div>`;
+      h += `<div class="ans-frozen">${esc(a.text)}</div>`;
+    } else {
+      h += `<div class="ans-lbl">// your answer</div>`;
+      h += `<textarea class="ans-input" id="ai${qId}" placeholder="Type your analysis here...">${esc(a.text)}</textarea>`;
+      h += `<div class="submit-row">`;
+      h += `<button class="submit-btn" onclick="doSubmit(${qId})">[ submit ]</button>`;
+      if(a.submitted){
+        if(st==='partial') h+=`<span class="submit-msg sm-partial">~ Partially correct — refine your answer and resubmit.</span>`;
+        else if(st==='wrong') h+=`<span class="submit-msg sm-wrong">&#10007; Incorrect — review the evidence and try again.</span>`;
+      }
+      h += `</div>`;
+    }
+
+    h += `</div></div>`;
+  });
+
+  document.getElementById('content').innerHTML = h;
+}
+
+// ─────────────────────────────────────────────
+// ACTIONS
+// ─────────────────────────────────────────────
+function unlockHint(qId, hi){
+  if(S.coins[S.curMod]<=0) return;
+  if(S.hintsShown[qId]>hi) return;
+  S.coins[S.curMod]--;
+  S.hintsShown[qId] = hi+1;
+  deduct(5);
+  render();
+}
+
+function doSubmit(qId){
+  const el = document.getElementById('ai'+qId);
+  if(!el) return;
+  const txt = el.value.trim();
+  if(!txt) return;
+  const result = check(qId, txt);
+  S.answers[qId] = {text:txt, status:result, submitted:true};
+  render();
+}
+
+function gotoMod(mi){
+  S.curMod = mi;
+  render();
+  document.getElementById('content').scrollTop = 0;
+}
+
+// ─────────────────────────────────────────────
+// BOOT
+// ─────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>
