@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>HIVE BREACH — Incident Response CTF</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<!-- Incident Alert Banner -->
+<div class="incident-banner">
+  <div class="blink-dot"></div>
+  INCIDENT ACTIVE — HIVEBANK WEB SERVER COMPROMISE — INVESTIGATION IN PROGRESS
+  <div class="blink-dot"></div>
+</div>
+
+<!-- Nav -->
+<nav>
+  <a class="nav-brand" href="/">
+    <div class="nav-logo"><div class="nav-logo-icon"></div></div>
+    <div>
+      <span class="nav-title">HIVE BREACH</span>
+      <span class="nav-sub">Incident Response CTF — Hive Consult</span>
+    </div>
+  </a>
+  <div class="nav-right">
+    <div class="progress-pill">Progress: <b id="navProgress">0/10</b> &nbsp;|&nbsp; Points: <b id="navPoints">0</b></div>
+    <button class="reset-btn" onclick="resetProgress()">Reset</button>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- Progress Bar -->
+  <div class="prog-bar" style="margin-bottom:20px">
+    <div class="prog-fill" id="progFill" style="width:0%"></div>
+  </div>
+
+  <!-- Incident Brief + SSH -->
+  <div class="grid-2" style="margin-bottom:20px">
+    <div class="incident-card">
+      <div class="card-header">
+        <span class="card-title">Incident Brief</span>
+        <span class="sev-label">Severity: Critical</span>
+      </div>
+      <p style="color:#333;font-size:.88rem;line-height:1.85;margin-bottom:14px">
+        <strong>15 January 2025 — 03:14 UTC.</strong> HiveBank's fraud detection system triggered
+        a critical alert. Unauthorised transactions totalling
+        <strong style="color:var(--red)">GHS 45,000</strong> have been drained from three
+        customer accounts. The company web server is showing signs of active compromise.
+        You have been paged as the on-call analyst.
+      </p>
+      <p style="color:#555;font-size:.85rem;line-height:1.8">
+        SSH into the compromised server, investigate the forensic artifacts, and answer the
+        10 investigation questions by capturing each flag. Reconstruct the full attack chain
+        from initial access to exfiltration.
+      </p>
+    </div>
+
+    <div class="ssh-card">
+      <div class="ssh-prompt">analyst@soc-workstation:~$</div>
+      <div class="ssh-line">ssh analyst@localhost -p 2222</div>
+      <div class="ssh-comment">Password: HiveAnalyst@2024</div>
+      <br>
+      <div class="ssh-line">sudo find /var/log -name "*.log"</div>
+      <div class="ssh-line">sudo sqlite3 /var/db/hivebank.db ".tables"</div>
+      <div class="ssh-line">sudo cat /root/.bash_history</div>
+      <div class="ssh-line">sudo find /var/www -name "*.php"</div>
+      <br>
+      <div class="ssh-prompt">analyst@hivebank-srv:~$ <span class="cursor"></span></div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="grid-3" style="margin-bottom:20px">
+    <div class="stat-card">
+      <div class="s-label">Flags Captured</div>
+      <div class="s-value" id="sSolved">0 / 10</div>
+      <div class="s-sub">Investigation progress</div>
+    </div>
+    <div class="stat-card yellow">
+      <div class="s-label">Points Earned</div>
+      <div class="s-value" id="sPoints">0</div>
+      <div class="s-sub">Maximum: 1,800 points</div>
+    </div>
+    <div class="stat-card red">
+      <div class="s-label">Incident Status</div>
+      <div class="s-value" style="font-size:1.1rem;margin-top:4px" id="sStatus">Active</div>
+      <div class="s-sub">HiveBank — server compromise</div>
+    </div>
+  </div>
+
+  <!-- Missions + Submission -->
+  <div class="grid-2">
+
+    <!-- Mission List -->
+    <div>
+      <h2 style="font-size:.82rem;color:var(--grey);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;font-weight:700">Investigation Tasks</h2>
+      <div id="missionList" style="display:flex;flex-direction:column;gap:10px">
+        <div style="color:var(--grey2);padding:10px">Loading tasks...</div>
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div style="display:flex;flex-direction:column;gap:18px">
+
+      <!-- Flag Submission -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Submit Flag</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Investigation Task</label>
+          <select id="flagSelect" class="form-select">
+            <option value="">Select a task...</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Flag Value</label>
+          <div style="display:flex;gap:8px">
+            <input class="flag-input" id="flagInput" placeholder="HIVE{...}" onkeyup="if(event.key==='Enter')submitFlag()" style="flex:1">
+            <button class="btn btn-green" onclick="submitFlag()">Submit</button>
+          </div>
+        </div>
+        <button class="btn btn-outline btn-full" onclick="getHint()">Get a Hint</button>
+        <div id="submitResult" style="margin-top:12px"></div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Attack Timeline</span>
+          <span style="color:var(--grey2);font-size:.72rem">15 Jan 2025 — UTC</span>
+        </div>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">02:05</div><div class="tl-text">SSH brute-force attack begins</div></div>
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">02:14</div><div class="tl-text">SQL injection against login page</div></div>
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">02:18</div><div class="tl-text">Webshell uploaded via file upload</div></div>
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">02:23</div><div class="tl-text">Remote code execution achieved</div></div>
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">02:31</div><div class="tl-text">Persistence mechanism installed</div></div>
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">02:35</div><div class="tl-text">Backdoor account created</div></div>
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">02:40</div><div class="tl-text">Customer database accessed and copied</div></div>
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">02:43</div><div class="tl-text">Stolen data exfiltrated to attacker server</div></div>
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">02:45</div><div class="tl-text">SSH key planted for re-entry</div></div>
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">02:52</div><div class="tl-text">Partial log wipe attempted</div></div>
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">02:55</div><div class="tl-text">Malware binary dropped to server</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    HIVE BREACH v1.0.0 — Incident Response CTF<br>
+    <span class="credit">Property of Hive Consult, Ghana. Designed by Nana Sei Anyemedu.</span>
+  </div>
+</div>
+
+<script>
+async function loadFlags() {
+  const d = await fetch('/api/flags').then(r => r.json());
+
+  // Stats
+  document.getElementById('sSolved').textContent = d.solved + ' / ' + d.total;
+  document.getElementById('sPoints').textContent = d.points;
+  document.getElementById('navProgress').textContent = d.solved + '/' + d.total;
+  document.getElementById('navPoints').textContent = d.points;
+  document.getElementById('progFill').style.width = (d.solved / d.total * 100) + '%';
+
+  if (d.solved >= d.total) {
+    document.getElementById('sStatus').textContent = 'Resolved';
+    document.getElementById('sStatus').style.color = 'var(--green)';
+    document.querySelector('.incident-banner').style.background = 'var(--green)';
+    document.querySelector('.incident-banner').textContent = 'Investigation Complete — All 10 flags captured. HiveBank breach fully reconstructed.';
+    document.querySelector('.incident-banner').style.animation = 'none';
+  }
+
+  // Mission cards
+  const catColors = {
+    'Log Analysis': 'badge-green',
+    'File Forensics': 'badge-yellow',
+    'Persistence': 'badge-red',
+    'Account Forensics': 'badge-yellow',
+    'Database Forensics': 'badge-yellow',
+    'Malware Analysis': 'badge-red',
+    'Threat Intel': 'badge-green',
+    'Data Exfiltration': 'badge-red',
+    'Timeline Analysis': 'badge-green'
+  };
+  const pts = {100:'badge-green',150:'badge-green',200:'badge-yellow',250:'badge-yellow',300:'badge-red'};
+
+  document.getElementById('missionList').innerHTML = d.flags.map((f, i) => `
+    <div class="mission-card ${f.solved ? 'solved' : 'open'}">
+      <div class="m-id">Task ${i + 1} &nbsp;·&nbsp; ${f.category}</div>
+      <div class="m-title">${f.title}</div>
+      <div class="m-path">${f.artifact}</div>
+      <div class="m-footer">
+        <div style="display:flex;gap:6px;align-items:center">
+          <span class="badge ${pts[f.points] || 'badge-grey'}">${f.points} pts</span>
+          <span class="badge ${catColors[f.category] || 'badge-grey'}">${f.category}</span>
+        </div>
+        <span class="badge ${f.solved ? 'badge-green' : 'badge-yellow'}">${f.solved ? 'Solved' : 'Open'}</span>
+      </div>
+    </div>`).join('');
+
+  // Populate select
+  const sel = document.getElementById('flagSelect');
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">Select a task...</option>';
+  d.flags.filter(f => !f.solved).forEach((f, i) => {
+    const o = document.createElement('option');
+    o.value = f.flag_id;
+    o.textContent = 'Task ' + (d.flags.indexOf(f) + 1) + ' — ' + f.title;
+    sel.appendChild(o);
+  });
+  if (cur) sel.value = cur;
+}
+
+async function submitFlag() {
+  const flag_id = document.getElementById('flagSelect').value;
+  const answer  = document.getElementById('flagInput').value.trim();
+  const box     = document.getElementById('submitResult');
+
+  if (!flag_id || !answer) {
+    box.innerHTML = '<div class="result-err">Please select a task and enter a flag value.</div>';
+    return;
+  }
+
+  const d = await fetch('/api/submit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ flag_id, answer })
+  }).then(r => r.json());
+
+  if (d.correct) {
+    // Update stats immediately from response — no wait for loadFlags
+    document.getElementById('sSolved').textContent   = d.total_solved + ' / 10';
+    document.getElementById('sPoints').textContent   = d.total_points;
+    document.getElementById('navProgress').textContent = d.total_solved + '/10';
+    document.getElementById('navPoints').textContent   = d.total_points;
+    document.getElementById('progFill').style.width    = (d.total_solved / 10 * 100) + '%';
+
+    box.innerHTML = '<div class="result-ok"><strong>Correct!</strong> Flag captured — ' + d.points + ' points awarded.<br><small style="font-family:monospace;opacity:.8">' + d.flag + '</small></div>';
+    document.getElementById('flagInput').value = '';
+
+    // Refresh mission list after short delay to ensure DB is committed
+    setTimeout(async () => { await loadFlags(); }, 300);
+
+    if (d.all_solved) showVictory();
+  } else {
+    box.innerHTML = '<div class="result-err">Incorrect — keep investigating.</div>';
+  }
+}
+
+async function getHint() {
+  const flag_id = document.getElementById('flagSelect').value;
+  if (!flag_id) {
+    document.getElementById('submitResult').innerHTML = '<div class="result-err">Select a task first.</div>';
+    return;
+  }
+  const d = await fetch('/api/hint/' + flag_id).then(r => r.json());
+  document.getElementById('submitResult').innerHTML = '<div class="result-hint"><strong>Hint:</strong> ' + d.hint + '</div>';
+}
+
+async function resetProgress() {
+  if (!confirm('Reset all investigation progress?')) return;
+  await fetch('/api/reset', { method: 'POST' });
+  document.getElementById('submitResult').innerHTML = '';
+  document.getElementById('flagInput').value = '';
+  loadFlags();
+}
+
+function showVictory() {
+  const v = document.createElement('div');
+  v.style.cssText = 'position:fixed;inset:0;background:rgba(246,250,246,0.96);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;';
+  v.innerHTML = `
+    <div style="text-align:center;max-width:500px;padding:48px;background:#fff;border-radius:16px;border:2px solid var(--green);box-shadow:0 8px 40px rgba(10,122,40,0.2)">
+      <div style="width:64px;height:64px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:1.6rem;color:#fff;font-weight:900">10</div>
+      <div style="font-size:1.6rem;font-weight:900;color:var(--green);margin-bottom:10px;letter-spacing:.05em">Investigation Complete</div>
+      <div style="color:#555;font-size:.9rem;margin-bottom:28px;line-height:1.6">All 10 flags captured. The HiveBank breach has been fully reconstructed. Well done, analyst.</div>
+      <div style="font-size:.75rem;color:var(--grey2);margin-bottom:20px">Property of Hive Consult, Ghana · Designed by Nana Sei Anyemedu</div>
+      <button onclick="this.closest('div[style]').remove()" style="background:var(--green);color:#fff;border:none;padding:10px 28px;border-radius:8px;cursor:pointer;font-size:.84rem;font-weight:700">Close</button>
+    </div>`;
+  document.body.appendChild(v);
+}
+
+loadFlags();
+setInterval(loadFlags, 15000);
+</script>
+</body>
+</html>

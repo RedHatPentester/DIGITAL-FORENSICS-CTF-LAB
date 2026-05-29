@@ -1,0 +1,22 @@
+name: hivebreach-ctf
+
+services:
+  hivebreach:
+    build: ./app
+    container_name: hivebreach-ctf
+    ports:
+      - "8080:3000"
+      - "2222:22"
+    volumes:
+      - hivebreach-data:/app/data
+    networks:
+      - breachnet
+    restart: unless-stopped
+
+volumes:
+  hivebreach-data:
+    name: hivebreach-ctf_data
+
+networks:
+  breachnet:
+    driver: bridge

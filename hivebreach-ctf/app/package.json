@@ -1,0 +1,11 @@
+{
+  "name": "hivebreach-ctf",
+  "version": "1.0.0",
+  "description": "HIVE BREACH — Incident Response CTF — Property of Hive Consult, Ghana",
+  "main": "server.js",
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "express": "^4.18.2",
+    "sqlite3": "^5.1.6"
+  }
+}
