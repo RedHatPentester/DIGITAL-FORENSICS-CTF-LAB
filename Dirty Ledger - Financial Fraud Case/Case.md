@@ -9,7 +9,7 @@ You are a digital forensics analyst at HIVE CONSULT Digital Forensics Laboratory
 You have been assigned to examine a laptop computer seized from a suspect in a major financial fraud investigation.
 
 
-Here are all 23 investigation tasks:
+**Here are all 23 investigation tasks:**
 
 SECTION A — Image Integrity & Filesystem
 1. Verify Image Integrity
