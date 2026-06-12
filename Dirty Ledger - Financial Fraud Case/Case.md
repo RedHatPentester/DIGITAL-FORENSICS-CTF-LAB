@@ -1,4 +1,4 @@
-SCENARIO BRIEFING
+**SCENARIO BRIEFING**
 
 The Ghana Financial Intelligence Centre (FIC) has flagged a pattern of suspicious transactions across multiple financial institutions in Accra, Kumasi, and Takoradi. 
 A coordinated money laundering network is suspected to be operating through fictitious front companies. 
