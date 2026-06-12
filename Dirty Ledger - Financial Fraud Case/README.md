@@ -28,7 +28,7 @@ Here are all 23 investigation tasks:
 11. Falsified Invoices
 12. Money Laundering Strategy
 
-**SECTION D — Email & Cloud Evidence**
+**SECTION D : Email & Cloud Evidence**
 13. Wire Transfer Confirmation
 14. FIC Obstruction
 15. Dropbox File Journal
