@@ -1,0 +1,22 @@
+SCENARIO BRIEFING
+
+The Ghana Financial Intelligence Centre (FIC) has flagged a pattern of suspicious transactions across multiple financial institutions in Accra, Kumasi, and Takoradi. A coordinated money laundering network is suspected to be operating through fictitious front companies. On 15 March 2025, officers executed a search and seizure order at the premises of Delta Ventures Ltd and seized a laptop belonging to the primary suspect, Paul Addo. The laptop has been forensically acquired by HIVE CONSULT DFL. You are required to examine the E01 disk image, recover evidence, and answer the investigation questions below.
+
+You are a digital forensics analyst at HIVE CONSULT Digital Forensics Laboratory, Accra. You have been assigned to examine a laptop computer seized from a suspect in a major financial fraud investigation.
+
+Here are all 23 investigation tasks:
+
+SECTION A: Image Integrity & Filesystem
+
+Verify Image Integrity
+Filesystem Identification
+File Count
+SECTION B : WhatsApp Evidence 4. Locate WhatsApp Database 5. Suspect Communication Network 6. Role Assignments 7. Cash Collection Orders 8. Evidence Destruction Intent
+
+SECTION C : Financial Documents 9. Master Transaction Ledger 10. Offshore Routing 11. Falsified Invoices 12. Money Laundering Strategy
+
+SECTION D: Email & Cloud Evidence 13. Wire Transfer Confirmation 14. FIC Obstruction 15. Dropbox File Journal 16. ProtonMail Evidence
+
+SECTION E: Browser & Anti-Forensics 17. Incriminating Searches 18. Anti-Forensic Evidence 19. Saved Credentials
+
+SECTION F: Timeline & Analysis 20. Build an Event Timeline 21. Identify the Three Stages 22. Deleted Evidence Recovery 23. Suspect Network Diagram
