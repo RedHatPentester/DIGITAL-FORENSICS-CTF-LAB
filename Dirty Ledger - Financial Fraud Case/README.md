@@ -43,5 +43,5 @@ Here are all 23 investigation tasks:
 20. Build an Event Timeline
 21. Identify the Three Stages
 22. Deleted Evidence Recovery
-23. Suspect Network DiagramHere are all 23 investigation tasks:
+23. Suspect Network Diagram
 
