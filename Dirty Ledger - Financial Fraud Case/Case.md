@@ -11,36 +11,37 @@ You have been assigned to examine a laptop computer seized from a suspect in a m
 
 **Here are all 23 investigation tasks:**
 
-SECTION A — Image Integrity & Filesystem
+SECTION A:  Image Integrity & Filesystem
 1. Verify Image Integrity
 2. Filesystem Identification
 3. File Count
 
-SECTION B — WhatsApp Evidence
+
+SECTION B : WhatsApp Evidence
 4. Locate WhatsApp Database
 5. Suspect Communication Network
 6. Role Assignments
 7. Cash Collection Orders
 8. Evidence Destruction Intent
 
-SECTION C — Financial Documents
+SECTION C : Financial Documents
 9. Master Transaction Ledger
 10. Offshore Routing
 11. Falsified Invoices
 12. Money Laundering Strategy
 
-SECTION D — Email & Cloud Evidence
+SECTION D: Email & Cloud Evidence
 13. Wire Transfer Confirmation
 14. FIC Obstruction
 15. Dropbox File Journal
 16. ProtonMail Evidence
 
-SECTION E — Browser & Anti-Forensics
+SECTION E: Browser & Anti-Forensics
 17. Incriminating Searches
 18. Anti-Forensic Evidence
 19. Saved Credentials
 
-SECTION F — Timeline & Analysis
+SECTION F: Timeline & Analysis
 20. Build an Event Timeline
 21. Identify the Three Stages
 22. Deleted Evidence Recovery
