@@ -8,15 +8,15 @@ This directory contains the training syllabus and investigation objectives for t
 
 ## Case Background
 
-An executive's driver narrowly avoided a serious crash after experiencing a sudden, catastrophic brake failure [cite: 2]. The vehicle had been serviced at the company garage just two days prior to the incident [cite: 2]. Investigators must conduct a deep-dive digital analysis to determine whether this incident stems from a routine mechanical defect or intentional, malicious tampering [cite: 2].
+An executive's driver narrowly avoided a serious crash after experiencing a sudden, catastrophic brake failure. The vehicle had been serviced at the company garage just two days prior to the incident. Investigators must conduct a deep-dive digital analysis to determine whether this incident stems from a routine mechanical defect or intentional, malicious tampering.
 
 
 
-The primary objective is to solve two linked operational questions using purely electronic evidence [cite: 3]:
+The primary objective is to solve two linked operational questions using purely electronic evidence:
 
-1. **Mechanical Defect vs. Deliberate Tampering:** Determine whether the sudden brake failure that nearly caused a serious crash was an honest mechanical fault or if someone deliberately compromised the vehicle [cite: 3].
+1. **Mechanical Defect vs. Deliberate Tampering:** Determine whether the sudden brake failure that nearly caused a serious crash was an honest mechanical fault or if someone deliberately compromised the vehicle.
 
-2. **Attribution:** If the system was compromised via tampering, identify the specific person responsible using only the digital and electronic trail left behind, completely bypassing the need for a physical inspection of the car [cite: 3].
+2. **Attribution:** If the system was compromised via tampering, identify the specific person responsible using only the digital and electronic trail left behind, completely bypassing the need for a physical inspection of the car.
 
 
 
@@ -26,9 +26,9 @@ The primary objective is to solve two linked operational questions using purely 
 
 ## Lab Artifacts & Dataset Information
 
-- **Target Image:** `VIP-GH-2026-TAMP-0417.E01` (Forensic Duplicate Image) [cite: 2]
+- **Target Image:** `VIP-GH-2026-TAMP-0417.E01` (Forensic Duplicate Image)  
 
-- **Case Code:** VIP-GH-2026-TAMP-0417 [cite: 2]
+- **Case Code:** VIP-GH-2026-TAMP-0417  
 
 
 
@@ -44,7 +44,7 @@ The primary objective is to solve two linked operational questions using purely 
 
 * **Diagnostic Integrity:** Parse the initial system status logs immediately leading up to the brake failure event. Identify any recurring error codes, clear commands, or forced diagnostic overrides.
 
-* **Maintenance Window Analysis:** Map out the exact timeline of the vehicle's stay at the company garage two days prior to the incident [cite: 2]. Identify which diagnostic tools, computers, or networks connected to the vehicle's control modules during this period.
+* **Maintenance Window Analysis:** Map out the exact timeline of the vehicle's stay at the company garage two days prior to the incident. Identify which diagnostic tools, computers, or networks connected to the vehicle's control modules during this period.
 
 
 
@@ -60,7 +60,7 @@ The primary objective is to solve two linked operational questions using purely 
 
 * **Digital Footprint Extraction:** Isolate the digital signatures, MAC addresses, technician login IDs, or cryptographic keys utilized during the anomalous configuration changes. 
 
-* **Final Determination:** Build an end-to-end chronological timeline supporting your conclusion [cite: 3]. If concluding tampering, clearly tie the electronic trail to the specific threat actor or terminal used to deploy the compromise [cite: 3].
+* **Final Determination:** Build an end-to-end chronological timeline supporting your conclusion. If concluding tampering, clearly tie the electronic trail to the specific threat actor or terminal used to deploy the compromise.
 
 
 
@@ -70,11 +70,11 @@ The primary objective is to solve two linked operational questions using purely 
 
 ## Instructions for Use
 
-1. Locate the `VIP-GH-2026-TAMP-0417.E01` image file within this lab folder [cite: 2].
+1. Locate the `VIP-GH-2026-TAMP-0417.E01` image file within this lab folder.
 
-2. Load the `.E01` image into an automotive-capable forensic suite or an advanced hex/telematics parsing tool [cite: 2].
+2. Load the `.E01` image into an automotive-capable forensic suite or an advanced hex/telematics parsing tool.
 
 3. Ensure your forensic workstation verifies the MD5/SHA-1 hashes of the image before starting analysis to maintain evidentiary chain of custody.
 
-4. Document your answers to the two core questions systematically within your final lab report [cite: 3].
+4. Document your answers to the two core questions systematically within your final lab report.
 
