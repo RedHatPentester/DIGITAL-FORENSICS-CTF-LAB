@@ -11,17 +11,11 @@ The primary objective of this exercise is to reconstruct the courier's in-vehicl
 
 ---
 
-## File & Dataset Information
-- **Target Archive:** `IOS_FullFileSystem.rar` (Approx. 66 MB)
+## File Information
+- **Target Archive:** `IOS_FullFileSystem.rar`
 - **Extraction Type:** iOS Full File System (FFS)
 - **Case Developer:** Nana Sei Anyemedu
 - **Property of:** Hive Consult
-
-### Dataset Access
-Due to size limitations on standard GitHub repository uploads, the raw forensic extraction target is hosted via GitHub Releases. 
-1. Navigate to the **Releases** section on the right sidebar of this repository.
-2. Download the `IOS_FullFileSystem.rar` binary asset from the latest release.
-3. Extract the archive locally using an appropriate extraction utility (e.g., WinRAR, 7-Zip, or unrar via terminal).
 
 ---
 
@@ -56,7 +50,6 @@ Due to size limitations on standard GitHub repository uploads, the raw forensic 
 ---
 
 ## Instructions for Use
-1. Download the file from the **Releases** tab.
-2. Extract the contents of `IOS_FullFileSystem.rar` using a forensic suite or archive extraction utility.
-3. Load the file system structure into your preferred forensic analysis tool (e.g., Cellebrite Physical Analyzer, Axiom, Autopsy, or manual SQLite parsers).
-4. Follow the phases sequentially to complete the reconstruction exercise.
+1. Extract the contents of `IOS_FullFileSystem.rar` using a forensic suite or archive extraction utility.
+2. Load the file system structure into your preferred forensic analysis tool (e.g., Cellebrite Physical Analyzer, Axiom, Autopsy, or manual SQLite parsers).
+3. Follow the phases sequentially to complete the reconstruction exercise.
