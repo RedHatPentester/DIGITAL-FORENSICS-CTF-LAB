@@ -1,0 +1,90 @@
+From attacker@node Tue Jul 14 09:00:00 2026
+From: "Kwabena Mensah (Finance Manager)" <kwabena.mensah@adinkra-logistics.com>
+To: "Efua Sarpong" <efua.sarpong@adinkra-logistics.com>
+Subject: Volta River Supplies - July invoice for review
+Date: Mon, 13 Jul 2026 14:22:10 +0000
+Message-ID: <20260713142210.6.A1C2B3D4@mail.adinkra-logistics.com>
+X-Training-Author: Created by Nana Sei Anyemedu | Property of HIVE CONSULT
+Authentication-Results: adinkra-logistics.com; spf=pass smtp.mailfrom=adinkra-logistics.com; dkim=pass; dmarc=pass
+Received: from mail.adinkra-logistics.com ([198.51.100.20]) by mx-in01.adinkra-logistics.com; Mon, 13 Jul 2026 14:22:10 +0000
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+
+Efua,
+
+Please review the attached Volta River Supplies invoice for July. Payment is due Friday against the usual beneficiary. I will confirm approval tomorrow.
+
+Kwabena
+
+From attacker@node Tue Jul 14 09:00:01 2026
+From: "Office 365 Security" <security-alert@office365-account-verify.com>
+To: "Kwabena Mensah" <kwabena.mensah@adinkra-logistics.com>
+Subject: Unusual sign-in detected, verify your account now
+Date: Mon, 13 Jul 2026 22:05:40 +0000
+Message-ID: <20260713220540.3.PH1SHHD0@office365-account-verify.com>
+X-Training-Author: Created by Nana Sei Anyemedu | Property of HIVE CONSULT
+Authentication-Results: adinkra-logistics.com; spf=fail; dkim=fail; dmarc=fail (p=reject)
+Received: from mail.adinkra-logistics.com ([203.0.113.66]) by mx-in01.adinkra-logistics.com; Mon, 13 Jul 2026 22:05:40 +0000
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+
+We detected an unusual sign-in to your account. Confirm it was you within 24 hours or access will be suspended.
+Verify here: http://office365-account-verify.com/owa/validate?u=kwabena.mensah
+
+Microsoft 365 Security
+
+From attacker@node Tue Jul 14 09:00:02 2026
+From: "Kwabena Mensah" <kwabena.mensah@adinkra-logistics.com>
+To: <k.mensah.finance@secure-mailbox-inbox.com>
+Cc: <approvals@adinkra-logistics.co>
+Subject: supplier master
+Date: Tue, 14 Jul 2026 09:12:00 +0000
+Message-ID: <20260714091200.9.EXFILHD1@mail.adinkra-logistics.com>
+X-Training-Author: Created by Nana Sei Anyemedu | Property of HIVE CONSULT
+Authentication-Results: adinkra-logistics.com; spf=pass smtp.mailfrom=adinkra-logistics.com; dkim=pass; dmarc=pass
+Received: from mail.adinkra-logistics.com ([203.0.113.66]) by mx-in01.adinkra-logistics.com; Tue, 14 Jul 2026 09:12:00 +0000
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+
+Supplier master and bank details attached for the update. Will action from personal device.
+
+(Supplier_Master_Bank_Details.xlsx)
+
+From attacker@node Tue Jul 14 09:00:03 2026
+From: "Volta River Supplies" <approvals@adinkra-logistics.co>
+To: "Payments" <payments@adinkra-logistics.com>
+Subject: Updated bank details for invoice INV-ADK-2026-0442
+Date: Tue, 14 Jul 2026 09:55:00 +0000
+Message-ID: <20260714095500.8.VEND0RHD@adinkra-logistics.co>
+X-Training-Author: Created by Nana Sei Anyemedu | Property of HIVE CONSULT
+Authentication-Results: adinkra-logistics.com; spf=fail; dkim=fail; dmarc=fail (p=reject)
+Received: from mail.adinkra-logistics.com ([203.0.113.66]) by mx-in01.adinkra-logistics.com; Tue, 14 Jul 2026 09:55:00 +0000
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+
+Kindly note our new banking details for the outstanding invoice.
+Beneficiary: Harbourpoint Freight Services
+Account: 88-4471-00925
+SWIFT: CRMBGB2L
+Bank: Crest Meridian Bank
+
+From attacker@node Tue Jul 14 09:00:04 2026
+From: "Efua Sarpong" <efua.sarpong@adinkra-logistics.com>
+To: "Kwabena Mensah (Finance Manager)" <kwabena.mensah@adinkra-logistics.com>
+Subject: RE: Approved: urgent supplier payment before cut off - confidential
+Date: Tue, 14 Jul 2026 10:14:50 +0000
+Message-ID: <20260714101450.4.C3B2A1F0@mail.adinkra-logistics.com>
+X-Training-Author: Created by Nana Sei Anyemedu | Property of HIVE CONSULT
+In-Reply-To: <20260714093022.1.F4E3D2C1@mx.mail-delivery-node.com>
+References: <20260713142210.6.A1C2B3D4@mail.adinkra-logistics.com> <20260714093022.1.F4E3D2C1@mx.mail-delivery-node.com>
+Authentication-Results: adinkra-logistics.com; spf=pass smtp.mailfrom=adinkra-logistics.com; dkim=pass; dmarc=pass
+Received: from mail.adinkra-logistics.com ([198.51.100.22]) by mx-in01.adinkra-logistics.com; Tue, 14 Jul 2026 10:14:50 +0000
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+
+Hello Kwabena,
+
+The beneficiary on the attached instruction does not match the Volta River Supplies record on file, and the bank is new. Can you confirm the change on a call before I release USD 128,750.00?
+
+Efua
+

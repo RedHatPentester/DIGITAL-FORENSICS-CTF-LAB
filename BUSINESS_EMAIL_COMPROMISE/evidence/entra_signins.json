@@ -1,0 +1,112 @@
+[
+  {
+    "createdDateTime": "2026-07-13T09:00:20Z",
+    "userPrincipalName": "efua.sarpong@adinkra-logistics.com",
+    "ipAddress": "198.51.100.22",
+    "location": {
+      "city": "Ghana",
+      "countryOrRegion": "GH"
+    },
+    "status": {
+      "errorCode": 0,
+      "failureReason": ""
+    },
+    "appDisplayName": "Office 365 Exchange Online",
+    "clientAppUsed": "Browser",
+    "deviceDetail": {
+      "operatingSystem": "Windows 10",
+      "browser": "Chrome"
+    },
+    "authenticationRequirement": "multiFactorAuthentication",
+    "_author": "Nana Sei Anyemedu",
+    "_property": "HIVE CONSULT"
+  },
+  {
+    "createdDateTime": "2026-07-14T08:00:41Z",
+    "userPrincipalName": "efua.sarpong@adinkra-logistics.com",
+    "ipAddress": "198.51.100.22",
+    "location": {
+      "city": "Ghana",
+      "countryOrRegion": "GH"
+    },
+    "status": {
+      "errorCode": 0,
+      "failureReason": ""
+    },
+    "appDisplayName": "Office 365 Exchange Online",
+    "clientAppUsed": "Browser",
+    "deviceDetail": {
+      "operatingSystem": "Windows 10",
+      "browser": "Chrome"
+    },
+    "authenticationRequirement": "multiFactorAuthentication",
+    "_author": "Nana Sei Anyemedu",
+    "_property": "HIVE CONSULT"
+  },
+  {
+    "createdDateTime": "2026-07-14T10:15:02Z",
+    "userPrincipalName": "efua.sarpong@adinkra-logistics.com",
+    "ipAddress": "198.51.100.22",
+    "location": {
+      "city": "Ghana",
+      "countryOrRegion": "GH"
+    },
+    "status": {
+      "errorCode": 0,
+      "failureReason": ""
+    },
+    "appDisplayName": "Office 365 Exchange Online",
+    "clientAppUsed": "Browser",
+    "deviceDetail": {
+      "operatingSystem": "Windows 10",
+      "browser": "Chrome"
+    },
+    "authenticationRequirement": "multiFactorAuthentication",
+    "_author": "Nana Sei Anyemedu",
+    "_property": "HIVE CONSULT"
+  },
+  {
+    "createdDateTime": "2026-07-14T07:50:33Z",
+    "userPrincipalName": "payments@adinkra-logistics.com",
+    "ipAddress": "198.51.100.24",
+    "location": {
+      "city": "Ghana",
+      "countryOrRegion": "GH"
+    },
+    "status": {
+      "errorCode": 0,
+      "failureReason": ""
+    },
+    "appDisplayName": "Office 365 Exchange Online",
+    "clientAppUsed": "Browser",
+    "deviceDetail": {
+      "operatingSystem": "Windows 10",
+      "browser": "Chrome"
+    },
+    "authenticationRequirement": "multiFactorAuthentication",
+    "_author": "Nana Sei Anyemedu",
+    "_property": "HIVE CONSULT"
+  },
+  {
+    "createdDateTime": "2026-07-14T08:44:50Z",
+    "userPrincipalName": "kwabena.mensah@adinkra-logistics.com",
+    "ipAddress": "203.0.113.66",
+    "location": {
+      "city": "Netherlands",
+      "countryOrRegion": "NL"
+    },
+    "status": {
+      "errorCode": 0,
+      "failureReason": ""
+    },
+    "appDisplayName": "Office 365 Exchange Online",
+    "clientAppUsed": "Browser",
+    "deviceDetail": {
+      "operatingSystem": "Linux",
+      "browser": "Firefox"
+    },
+    "authenticationRequirement": "multiFactorAuthentication",
+    "_author": "Nana Sei Anyemedu",
+    "_property": "HIVE CONSULT"
+  }
+]

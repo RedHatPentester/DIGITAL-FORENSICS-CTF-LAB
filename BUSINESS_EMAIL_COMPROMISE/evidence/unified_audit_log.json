@@ -1,0 +1,18 @@
+[
+  {
+    "CreationDate": "2026-07-14T08:47:30Z",
+    "UserIds": "kwabena.mensah@adinkra-logistics.com",
+    "Operations": "Update StrongAuthenticationMethod",
+    "AuditData": "{\"CreationTime\": \"2026-07-14T08:47:30Z\", \"Operation\": \"Update StrongAuthenticationMethod\", \"UserId\": \"kwabena.mensah@adinkra-logistics.com\", \"ClientIP\": \"203.0.113.66\", \"Workload\": \"AzureActiveDirectory\", \"ResultStatus\": \"Succeeded\"}",
+    "_author": "Nana Sei Anyemedu",
+    "_property": "HIVE CONSULT"
+  },
+  {
+    "CreationDate": "2026-07-14T09:45:00Z",
+    "UserIds": "kwabena.mensah@adinkra-logistics.com",
+    "Operations": "Consent to application",
+    "AuditData": "{\"CreationTime\": \"2026-07-14T09:45:00Z\", \"Operation\": \"Consent to application\", \"UserId\": \"kwabena.mensah@adinkra-logistics.com\", \"ClientIP\": \"203.0.113.66\", \"Workload\": \"AzureActiveDirectory\", \"ResultStatus\": \"Succeeded\", \"ApplicationName\": \"MailSync Pro\"}",
+    "_author": "Nana Sei Anyemedu",
+    "_property": "HIVE CONSULT"
+  }
+]

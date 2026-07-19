@@ -1,0 +1,58 @@
+Return-Path: <bounce-5591@mx.mail-delivery-node.com>
+Received: from mx-in01.adinkra-logistics.com ([10.40.12.6])
+	by store01.adinkra-logistics.com with LMTP id 4c8f21ab; Tue, 14 Jul 2026 09:30:41 +0000
+Received: from gw-filter.adinkra-logistics.com ([10.40.12.2])
+	by mx-in01.adinkra-logistics.com with ESMTPS (TLS1.2); Tue, 14 Jul 2026 09:30:39 +0000
+Received: from mx.mail-delivery-node.com ([203.0.113.66])
+	by gw-filter.adinkra-logistics.com with ESMTPS id 7d2e11; Tue, 14 Jul 2026 09:30:33 +0000
+Authentication-Results: adinkra-logistics.com;
+	spf=fail smtp.mailfrom=adinkra-logistics.com;
+	dkim=fail header.d=adinkra-logistics.com;
+	dmarc=fail (p=reject sp=reject dis=none) header.from=adinkra-logistics.com
+Received-SPF: fail (adinkra-logistics.com: domain of kwabena.mensah@adinkra-logistics.com does not designate 203.0.113.66 as permitted sender) client-ip=203.0.113.66;
+From: "Kwabena Mensah (Finance Manager)" <kwabena.mensah@adinkra-logistics.com>
+To: "Efua Sarpong" <efua.sarpong@adinkra-logistics.com>
+Cc: "Payments" <payments@adinkra-logistics.com>
+Reply-To: "Kwabena Mensah" <k.mensah.finance@secure-mailbox-inbox.com>
+Subject: Approved: urgent supplier payment before cut off - confidential
+Date: Tue, 14 Jul 2026 09:30:22 +0000
+Message-ID: <20260714093022.1.F4E3D2C1@mx.mail-delivery-node.com>
+In-Reply-To: <20260713142210.6.A1C2B3D4@mail.adinkra-logistics.com>
+References: <20260713142210.6.A1C2B3D4@mail.adinkra-logistics.com>
+MIME-Version: 1.0
+X-Priority: 1
+Importance: High
+X-Training-Author: Created by Nana Sei Anyemedu | Property of HIVE CONSULT
+X-Case-Owner: HIVE CONSULT
+Content-Type: multipart/mixed; boundary="----=_Part_HD_2026"
+
+This is a multi-part message in MIME format.
+------=_Part_HD_2026
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+
+Efua,
+
+I have approved the Volta River Supplies payment. Their bank has changed,
+so use the updated beneficiary on the attached instruction. Please process
+before the banking cut off today and confirm once done.
+
+Handle this directly with me only for now, it relates to a confidential
+contract matter. I am in meetings so reply by email rather than calling.
+
+Regards,
+Kwabena Mensah
+Finance Manager
+
+------=_Part_HD_2026
+Content-Type: application/pdf; name="Payment_Instruction_INV-ADK-2026-0442.pdf"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="Payment_Instruction_INV-ADK-2026-0442.pdf"
+
+UEFZTUVOVCBJTlNUUlVDVElPTiAtIENPTkZJREVOVElBTAoKQmVuZWZpY2lhcnkgQmFuazogQ3Jl
+c3QgTWVyaWRpYW4gQmFuawpCZW5lZmljaWFyeSBOYW1lOiBIYXJib3VycG9pbnQgRnJlaWdodCBT
+ZXJ2aWNlcwpBY2NvdW50IE51bWJlcjogODgtNDQ3MS0wMDkyNQpTV0lGVC9CSUM6IENSTUJHQjJM
+CkFtb3VudDogVVNEIDEyOCw3NTAuMDAKUmVmZXJlbmNlOiBJTlYtQURLLTIwMjYtMDQ0MgoKS2lu
+ZGx5IHByb2Nlc3MgdG9kYXkgYW5kIGNvbmZpcm0gYnkgcmVwbHkuCg==
+
+------=_Part_HD_2026--
