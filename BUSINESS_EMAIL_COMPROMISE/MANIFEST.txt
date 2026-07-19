@@ -1,0 +1,36 @@
+CIPHER EVIDENCE MANIFEST
+========================
+Case              : Operation Harbour Drift (HC-2026-0442)
+Author            : Nana Sei Anyemedu
+Property of       : HIVE CONSULT
+Generated (UTC)   : 2026-07-18T16:35:51Z
+Tool              : CIPHER, Cloud Investigation Platform for Hosted Email and Records
+
+Enforced integrity covers the evidence files below. The case file is a derived
+working file and is listed for information only (it changes when re-exported).
+
+-----BEGIN ENFORCED HASHES-----
+a94003803feb068ccb42a7c2390560a045fb6004557aa717e6bdbdbb9e4a26d6  evidence/Adinkra_Invoice_Fraud.eml
+f2167bd5452ebba25929eb7aa470347c2b1101e116b9e9e50ed289632449a390  evidence/entra_signins.csv
+5f9315245cf6cf7900776ef85e5dbf880d4572e1af23a0e28ffcffe014d52bfd  evidence/entra_signins.json
+255072f9e17edd308427a6c6616b12f1345d5220e6b64b623d2128ebbdca4b3f  evidence/mailbox_adinkra.mbox
+a38c24d6637ef27e26677b30145f7b1a5bc10c3f8159e7dc091eb65095aa6f7b  evidence/message_trace.csv
+30acb5be53f90ac13edcb71f4896d8d2d7d71b8ef2551492dee907dc5cb15b09  evidence/onedrive_sharepoint_audit.csv
+9a30bb10805c6b2deb8172d2bd396e433167c76ad8c09879ed8fca2eccfc09d7  evidence/unified_audit_log.csv
+65a0ab6b96f7c0ba92165594e8a13a54b7ba1e78cf778a6dccb0cc5a9ec3ffc5  evidence/unified_audit_log.json
+-----END ENFORCED HASHES-----
+
+Manifest digest (binds the evidence hashes to the author and owner)
+-------------------------------------------------------------------
+SHA-256 : 7f59533b910684b99049dfc810f90643230bdbba01fc2cb881a00bf31bf983e3
+
+Derived artifact (informational, not enforced)
+----------------------------------------------
+9b2e48ad0fdc9664d52f83b2eb201a0679e05c101bf0f9f116270b50a7d0f7e3  Harbour_Drift_case.cipher.json
+
+Statement
+---------
+This case and all listed evidence were created by Nana Sei Anyemedu and are the property of HIVE CONSULT.
+Any change to an enforced evidence file invalidates the digest and the signature. Run verify.sh.
+
+Created by Nana Sei Anyemedu | Property of HIVE CONSULT
