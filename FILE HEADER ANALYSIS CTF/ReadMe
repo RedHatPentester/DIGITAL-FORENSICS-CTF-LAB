@@ -1,20 +1,27 @@
-HIVE-FSA-003 — Project Falcon: Orphaned Evidence
+Evidence Item 1
 
-Difficulty: Extreme
-Evidence File: HIVE-FSA-003boardminutes.doc
+HIVE-FSA-003_Project_Falcon_FIXED.doc
+This is the initial file recovered during the investigation.
+Difficulty: Advanced / Extremely Difficult
+Category: File Signature Analysis / File Header Analysis / Embedded Object Recovery
 
 Scenario
-During an investigation into unauthorized disclosure of confidential executive information at HIVE CONSULT Minerals Ghana Limited, investigators recover a file named:
-board_minutes.doc
-The file is presented as an ordinary Microsoft Word meeting-minutes document relating to Project Falcon.
-Initial examination suggests that the file is not quite what its extension claims. After recovering the apparent document, investigators discover that the visible contents appear completely ordinary and specifically state that no executive photographs are attached.
-However, intelligence from the investigation indicates that a confidential executive boardroom photograph may still be concealed somewhere inside the evidence.
+During an internal investigation at HIVE CONSULT, examiners recovered a suspicious file believed to be connected to a restricted internal exercise known as Project Falcon.
+The file appeared to be an ordinary Microsoft Word document containing meeting-related material. However, forensic examiners suspected that the file had been deliberately manipulated to conceal additional evidence.
+Preliminary inspection suggested that:
+the outer file extension may not match the true internal structure;
+embedded objects may exist inside the file container;
+at least one hidden object may not be visible when the file is opened normally;
+the concealed evidence may ultimately reveal a final flag artifact.
 
+Investigators were tasked with determining the true nature of the file, recovering all concealed evidence, and identifying the final flag.
+Examiners believe the real evidence is hidden deeper inside the file and may include a final recovery artifact showing whether the challenge has been successfully completed.
 
 Student Tasks
-Identify the file type claimed by .doc.
-Examine the file's opening bytes.
-Determine whether the internal structure is consistent with a legacy Microsoft Word .doc file.
-Determine the file's actual container/format.
-Restore an appropriate extension without modifying the original evidence.
-Examine the internal package structure.
+1.Determine the claimed file type from the file extension.
+2. Examine the first bytes / file header of the evidence file.
+3. Determine whether the file is truly a legacy .doc document.
+4. Identify the actual underlying file format.
+5. Determine the true file type of the concealed internal object, restore the correct extension, open the recovered object, and extract and document the final flag.
+6. State why the concealed object would not be visible to a normal user opening the document in Microsoft Word.
+7. Write a short professional forensic conclusion.
