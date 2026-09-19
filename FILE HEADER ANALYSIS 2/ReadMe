@@ -1,1 +1,16 @@
+HIVE-FSA-005 — Project Helix: The Double Concealment
 
+Difficulty: Expert / Very Difficult
+Category: File Signature Analysis, File Header Analysis, OOXML Analysis, Email Forensics, MIME Analysis, Base64 Recovery, Embedded Object Recovery
+Flags: 2
+
+Scenario
+
+HIVE CONSULT is conducting an internal investigation following indications that confidential client information may have been removed from an internal evidence repository.
+During the investigation, examiners recover a file from an employee workstation named:
+Executive_Board_Update.doc
+The employee claims that the file contains nothing more than routine executive meeting notes.
+When opened normally, the document appears legitimate. It contains HIVE CONSULT branding, meeting notes, governance updates, and a statement indicating that there are no incident-response attachments associated with the document.
+However, HIVE's incident-response team received intelligence suggesting that an important email relating to the incident had been deliberately concealed inside the document.
+Investigators also believe that the concealed email contains another evidence object that must be recovered separately.
+The objective is to locate two independent flags.
