@@ -18,3 +18,11 @@ email data, an image, and a database.
 The suspect allegedly told investigators: “It is only a PDF. Open it and see for yourself.”
 
 Your forensic team has been instructed to determine whether the file contains anything beyond the visible PDF and recover all genuine HIVE CONSULT CTF flags.
+
+
+QUESTIONS:
+1. What is the true structure of Board_Audit_2026.pdf, and what evidence proves that additional data exists beyond the legitimate end of the PDF?
+
+2. Identify and carve the hidden secondary object appended to the PDF. What is its file type, and what signature confirms it?
+
+3. Within the carved archive, which file contains the real investigative evidence, how is it encoded, and what is the correct method for recovering its original content?
