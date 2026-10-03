@@ -1,1 +1,20 @@
+HIVE-FSA-006 — OPERATION CHIMERA
+“The File That Refused to Be One Thing”
+Difficulty: GODMODE / Expert
 
+Primary Focus: File Header Analysis, File Signature Analysis, File Carving, Corrupted Headers, Trailing Data, MIME/Email Forensics, Base64, PNG Structure, SQLite, Polyglot-style Evidence
+
+Recommended Time: 2–4 hours
+
+Flags: 3 real flags + several deliberate decoys
+This one should be designed so that every time the student thinks they have identified the real file type, another layer appears.
+
+Case Scenario: 
+
+HIVE CONSULT is investigating a suspected insider incident involving unauthorized access to confidential client assessment material. During forensic acquisition of an employee workstation, investigators recover a single file from a deleted temporary directory:
+Board_Audit_2026.pdf The file appears completely legitimate. It opens in a PDF reader and contains a professionally formatted HIVE CONSULT board audit report. The document states that no additional evidence was attached to the report.
+However, endpoint logs show that the file was unusually large for a simple PDF, and investigators recovered fragments suggesting that the same file may previously have contained:
+email data, an image, and a database.
+The suspect allegedly told investigators: “It is only a PDF. Open it and see for yourself.”
+
+Your forensic team has been instructed to determine whether the file contains anything beyond the visible PDF and recover all genuine HIVE CONSULT CTF flags.
