@@ -1,28 +1,13 @@
-HIVE-FSA-006 — OPERATION CHIMERA
-“The File That Refused to Be One Thing”
-Difficulty: GODMODE / Expert
+HIVE CONSULT DIGITAL FORENSICS CTF
+HIVE-FSA-009E - PROJECT CHIMERA
 
-Primary Focus: File Header Analysis, File Signature Analysis, File Carving, Corrupted Headers, Trailing Data, MIME/Email Forensics, Base64, PNG Structure, SQLite, Polyglot-style Evidence
+Difficulty: Advanced / Difficult
+Genuine Flags: 4
+Decoy Flags: 2
 
-Recommended Time: 2–4 hours
+SCENARIO
+HIVE CONSULT is investigating suspected manipulation and unauthorized movement of confidential client evidence.
+Investigators recover a confidential board audit document from the affected workstation. The document opens normally and appears legitimate, but forensic review indicates that additional evidence may be associated with the file.
+Your objective is to recover FOUR genuine flags while distinguishing real evidence from misleading or decoy flags.
+A file may be valid and still contain more evidence than the application shows.
 
-Flags: 3 real flags + several deliberate decoys
-This one should be designed so that every time the student thinks they have identified the real file type, another layer appears.
-
-Case Scenario: 
-
-HIVE CONSULT is investigating a suspected insider incident involving unauthorized access to confidential client assessment material. During forensic acquisition of an employee workstation, investigators recover a single file from a deleted temporary directory:
-Board_Audit_2026.pdf The file appears completely legitimate. It opens in a PDF reader and contains a professionally formatted HIVE CONSULT board audit report. The document states that no additional evidence was attached to the report.
-However, endpoint logs show that the file was unusually large for a simple PDF, and investigators recovered fragments suggesting that the same file may previously have contained:
-email data, an image, and a database.
-The suspect allegedly told investigators: “It is only a PDF. Open it and see for yourself.”
-
-Your forensic team has been instructed to determine whether the file contains anything beyond the visible PDF and recover all genuine HIVE CONSULT CTF flags.
-
-
-QUESTIONS:
-1. What is the true structure of Board_Audit_2026.pdf, and what evidence proves that additional data exists beyond the legitimate end of the PDF?
-
-2. Identify and carve the hidden secondary object appended to the PDF. What is its file type, and what signature confirms it?
-
-3. Within the carved archive, which file contains the real investigative evidence, how is it encoded, and what is the correct method for recovering its original content?
