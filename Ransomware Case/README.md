@@ -23,6 +23,17 @@ This challenge is distributed as a zip archive. Extract it to access the evidenc
 | `meridian_workstation.E01` | EnCase forensic image of Philip Green's workstation (257 MB) |
 | `meridian_incident.pcap` | Network packet capture from the incident |
 
+## Verification Hashes (SHA-256)
+* **`meridian_workstation.E01`**
+  ```text
+  aefcd3bfba4da3f3f097012f32459ad1e438f9d25824514b7c412e1c7e2e238c
+  ```
+* **`meridian_incident.pcap`**
+  ```text
+   2d87f551665021d0b2d940e5c5bb824d7a338a9f90a4d0cdc9b14fe969b508af
+   ```
+
+
 ## Questions
 
 1. What was the initial access vector and when did it occur?
